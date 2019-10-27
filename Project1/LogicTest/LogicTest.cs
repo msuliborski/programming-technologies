@@ -168,7 +168,29 @@ namespace LogicTest {
         }
 
         [TestMethod]
-        public void EventsTest() {
+        public void EventTest() {
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 0);
+
+            library.AddReader(new Reader(99, "test1", "test1"));
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 1);
+
+            library.DeleteReader(99);
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 2);
+
+            library.AddCatalog(new Catalog("test", "test"));
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 3);
+
+            library.DeleteCatalog(1);
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 4);
+
+            library.RentBook("Shakespeare", "Sonnet 116");
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 5);
+
+            library.ReturnBook(new Book(new Catalog("test", "test"), 99));
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 6);
+
+            library.DeleteBook(new Book(new Catalog("test", "test"), 99));
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 7);
         }
 
 
