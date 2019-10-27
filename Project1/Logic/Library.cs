@@ -13,6 +13,11 @@ namespace Logic {
 
 
         #region Book
+        public Book GetBook(string author, string title) {
+            return dataRepository.GetBook(dataRepository.GetCatalog(author, title));
+        }
+
+
         public Book RentBook(string author, string title) {
             Catalog catalog = dataRepository.GetCatalog(author, title);
             Book book = dataRepository.GetBook(catalog);
@@ -36,6 +41,11 @@ namespace Logic {
         #endregion
 
         #region Reader
+
+        public Reader GetReader(int id) {
+            return dataRepository.GetReader(id);
+        }
+
         public void AddReader(Reader reader) {
             dataRepository.AddReader(reader);
             dataRepository.AddEvent(new AddReader(DateTime.Now, reader));
@@ -74,6 +84,10 @@ namespace Logic {
         #endregion
 
         #region Catalog
+        public Catalog GetCatalog(string author, string title) {
+            return dataRepository.GetCatalog(author, title);
+        }
+
         public void AddCatalog(Catalog catalog) {
             dataRepository.AddCatalog(catalog);
             dataRepository.AddEvent(new AddCatalog(DateTime.Now, catalog));

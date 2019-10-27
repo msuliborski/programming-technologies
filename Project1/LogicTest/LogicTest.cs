@@ -113,6 +113,8 @@ namespace LogicTest {
         
         [TestMethod]
         public void BookTest() {
+            //int count = library.ge
+            Book book = library.RentBook("Twain", "Adventures of Huckleberry Finn");
         }
 
         [TestMethod]
