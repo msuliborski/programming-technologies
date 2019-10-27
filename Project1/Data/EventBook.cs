@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Data {
-    public class addCatalog : IEvent {
-        public Catalog Catalog { get; set; }
+    public class AddCatalog : IEvent {
 
-        public Invoice(int price, IUser user) {
+        public override EventType GetEventType() {
+            return EventType.AddCatalog;
+        }
+
+
+        private Type type; 
+
+        public AddCatalog() {
             this.price = price;
             this.user = user;
         }
+
 
         public void execute() {
             throw new NotImplementedException();
