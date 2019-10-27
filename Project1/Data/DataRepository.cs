@@ -26,27 +26,79 @@ namespace Data {
             data.Catalogs.Add(c);
         }
 
-        public Catalog GetCatalog(int id) {
-            return data.Catalogs[id];
+        public void AddCatalog(string author, string title) {
+            data.Catalogs.Add(new Catalog(author, title));
         }
+
+        public void AddCatalog(string author, string title, List<Book> books) {
+            data.Catalogs.Add(new Catalog(author, title, books));
+        }
+
+        public Catalog GetCatalog(string author, string title) {
+            foreach (Catalog c in data.Catalogs) {
+                if (c.Author.Equals(author) && c.Title.Equals(title)) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        public Catalog GetCatalog(int index) {
+            if (index >= 0 && index < data.Catalogs.Count) {
+                return data.Catalogs[index];
+            }
+            return null;
+        }
+
         public IEnumerable<Catalog> GetAllCatalogs() {
             return data.Catalogs;
         }
 
-        public void UpdateCatolog(int id, Catalog c) {
-            data.Catalogs[id] = c;
+        public void UpdateCatalog(int index, Catalog c) {
+            if (index >= 0 && index < data.Catalogs.Count) {
+                data.Catalogs[index] = c;
+            }
         }
 
-        public void DeleteCatalog(int id) {
-            data.Catalogs.RemoveAt(id);
+        public void UpdateCatalog(string author, string title, Catalog c) {
+            for (int i = 0; i < data.Catalogs.Count; i++) {
+                if (data.Catalogs[i].Author.Equals(author) && data.Catalogs[i].Title.Equals(title)) {
+                    data.Catalogs[i] = c;
+                    break;
+                }
+            }
+        }
+
+
+        public void DeleteCatalog(int index)
+        {
+            if (index >= 0 && index < data.Catalogs.Count) {
+                data.Catalogs.RemoveAt(index);
+            }
+        }
+
+        public void DeleteCatalog(string author, string title) {
+            Catalog c = GetCatalog(author, title);
+            if (c != null) {
+                data.Catalogs.Remove(c);
+            }
         }
 
         public void AddReader(Reader r) {
             data.Readers.Add(r);
         }
 
+        public void AddReader(int id, string fistName, string lastName) {
+            data.Readers.Add(new Reader(id, fistName, lastName));
+        }
+
         public Reader GetReader(int id) {
-            return data.Readers[id];
+            foreach (Reader r in data.Readers) {
+                if (r.Id == id) {
+                    return r;
+                }
+            }
+            return null;
         }
 
         public IEnumerable<Reader> GetAllReaders() {
@@ -61,26 +113,6 @@ namespace Data {
             data.Readers.RemoveAt(id);
         }
 
-
-        public void AddBook(Reader r) {
-            data.Books.Add(r);
-        }
-
-        public Reader GetReader(int id) {
-            return data.Readers[id];
-        }
-
-        public IEnumerable<Reader> GetAllReaders() {
-            return data.Readers;
-        }
-
-        public void UpdateReader(int id, Reader r) {
-            data.Readers[id] = r;
-        }
-
-        public void DeleteReader(int id) {
-            data.Readers.RemoveAt(id);
-        }
-
+        
     }
 }
