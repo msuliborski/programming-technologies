@@ -1,4 +1,6 @@
 ﻿using Data;
+using Logic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LogicTest {
@@ -6,12 +8,13 @@ namespace LogicTest {
     public class LogicTest {
 
         private DataRepository dataRepository;
+        private Library library;
 
         [TestInitialize]
         public void Fill() {
 
             dataRepository = new DataRepository();
-
+            
             Catalog c1 = new Catalog("Shakespeare", "Sonnet 116");
             c1.Books.Add(new Book(c1, 1));
             c1.Books.Add(new Book(c1, 2));
@@ -90,13 +93,32 @@ namespace LogicTest {
             r3.Books.Add(new Book(c11, 31));
             r3.Books.Add(new Book(c12, 31));
             dataRepository.AddReader(r3);
+
+            library = new Library(dataRepository);
         }
-
-
 
 
         [TestMethod]
-        public void TestMethod1() {
+        public void FillTest() {
         }
+
+        [TestMethod]
+        public void CatalogTest() {
+        }
+
+        [TestMethod]
+        public void ReaderTest() {
+        }
+
+        
+        [TestMethod]
+        public void BookTest() {
+        }
+
+        [TestMethod]
+        public void EventsTest() {
+        }
+
+
     }
 }
