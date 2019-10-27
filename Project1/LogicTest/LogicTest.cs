@@ -14,7 +14,7 @@ namespace LogicTest {
         public void Fill() {
 
             dataRepository = new DataRepository();
-            
+
             Catalog c1 = new Catalog("Shakespeare", "Sonnet 116");
             c1.Books.Add(new Book(c1, 1));
             c1.Books.Add(new Book(c1, 2));
@@ -77,7 +77,6 @@ namespace LogicTest {
             dataRepository.AddCatalog(c12);
 
 
-
             Reader r1 = new Reader(1, "John", "Kowalsky");
             r1.Books.Add(new Book(c5, 26));
             r1.Books.Add(new Book(c9, 27));
@@ -100,17 +99,68 @@ namespace LogicTest {
 
         [TestMethod]
         public void FillTest() {
+            Assert.IsTrue(library.GetAllCatalogs().ToList().Count == 12);
+            Assert.IsTrue(library.GetAllReaders().ToList().Count == 3);
+            Assert.IsTrue(library.GetAllEvents().ToList().Count == 0);
+
+
+            Assert.IsTrue(library.GetCatalog("Shakespeare", "Sonnet 116").Author.Equals("Shakespeare"));
+            Assert.IsTrue(library.GetCatalog("Shakespeare", "Sonnet 116").Title.Equals("Sonnet 116"));
+            Assert.IsTrue(library.GetCatalog("Shakespeare", "Sonnet 116").Books.Count == 3);
+            Assert.IsTrue(library.GetCatalog("Shakespeare", "Sonnet 116").Books[0].IdNumber == 1);
+
+
+            Assert.IsTrue(library.GetReader(1).FirstName.Equals("John"));
+            Assert.IsTrue(library.GetReader(1).LastName.Equals("Kowalsky"));
+            Assert.IsTrue(library.GetReader(1).Id == 1);
+            Assert.IsTrue(library.GetReader(1).Books.Count == 3);
+            Assert.IsTrue(library.GetReader(1).Books[0].IdNumber == 26);
         }
 
         [TestMethod]
         public void CatalogTest() {
+            Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
+            dataRepository.AddCatalog(new Catalog("test1", "test2"));
+            Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 13);
+
+            Assert.IsTrue(dataRepository.GetCatalog(12).Author.Equals("test1"));
+            Assert.IsTrue(dataRepository.GetCatalog(12).Title.Equals("test2"));
+
+            dataRepository.DeleteCatalog(1);
+            Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
         }
 
         [TestMethod]
         public void ReaderTest() {
+            Assert.IsTrue(library.GetAllReaders().ToList().Count == 3);
+            library.AddReader(new Reader(90, "test10", "test20"));
+            Assert.IsTrue(library.GetAllReaders().ToList().Count == 4);
+            library.AddReader(new Reader(91, "test11", "test21"));
+            Assert.IsTrue(library.GetAllReaders().ToList().Count == 5);
+
+            Assert.IsTrue(library.GetReader(91).FirstName.Equals("test11"));
+            Assert.IsTrue(library.GetReader(91).LastName.Equals("test21"));
+            Assert.IsTrue(library.GetReader(91).Id == 91);
+
+            Catalog c = library.GetCatalog("Shakespeare", "Sonnet 116");
+            Assert.IsTrue(library.GetBook("Shakespeare", "Sonnet 116").Catalog.Author.Equals("Shakespeare"));
+            Assert.IsTrue(library.GetBook("Shakespeare", "Sonnet 116").Catalog.Title.Equals("Sonnet 116"));
+            Assert.IsTrue(library.GetBook("Shakespeare", "Sonnet 116").Catalog.Books.Count == 3);
+            Assert.IsTrue(library.GetBook("Shakespeare", "Sonnet 116").Catalog.Books[0].IdNumber == 1);
+
+
+            library.DeleteReader(91);
+            Assert.IsTrue(library.GetAllReaders().ToList().Count == 4);
+
+            Reader r = new Reader(99, "test99a", "test99b");
+            library.UpdateReader(90, r);
+
+            Assert.IsTrue(library.GetReader(99).FirstName.Equals("test99a"));
+            Assert.IsTrue(library.GetReader(99).LastName.Equals("test99b"));
+            Assert.IsTrue(library.GetReader(99).Id == 99);
+            Assert.IsTrue(library.GetAllReaders().ToList().Count == 4);
         }
 
-        
         [TestMethod]
         public void BookTest() {
             //int count = library.ge
