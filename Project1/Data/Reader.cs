@@ -14,6 +14,7 @@ namespace Data {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
+            Books = new List<Book>();
         }
     }
 }
