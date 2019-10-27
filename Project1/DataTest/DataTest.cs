@@ -76,7 +76,6 @@ namespace DataTest {
             dataRepository.AddCatalog(c12);
 
 
-
             Reader r1 = new Reader(1, "John", "Kowalsky");
             r1.Books.Add(new Book(c5, 26));
             r1.Books.Add(new Book(c9, 27));
@@ -116,7 +115,7 @@ namespace DataTest {
         }
 
         [TestMethod]
-        public void BookHandleTest() {
+        public void BookTest() {
 
             Catalog c = dataRepository.GetCatalog(0);
 
@@ -124,7 +123,6 @@ namespace DataTest {
             Assert.IsTrue(dataRepository.GetBook(c).Catalog.Title.Equals("Sonnet 116"));
             Assert.IsTrue(dataRepository.GetBook(c).Catalog.Books.Count == 3);
             Assert.IsTrue(dataRepository.GetBook(c).Catalog.Books[0].IdNumber == 1);
-
         }
 
         [TestMethod]
@@ -150,6 +148,7 @@ namespace DataTest {
             dataRepository.DeleteReader(91);
             Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 4);
 
+
             Reader r = new Reader(99, "test99a", "test99b");
             dataRepository.UpdateReader(90, r);
 
@@ -168,7 +167,6 @@ namespace DataTest {
 
             Assert.IsTrue(dataRepository.GetCatalog(12).Author.Equals("test1"));
             Assert.IsTrue(dataRepository.GetCatalog(12).Title.Equals("test2"));
-
 
             dataRepository.DeleteCatalog(1);
             Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
