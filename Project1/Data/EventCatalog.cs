@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Data {
     public abstract class EventCatalog : IEvent {
         protected DateTime dateTime;
-        protected Catalog catalog;
+        public Catalog Catalog { get; set; }
 
         public EventCatalog(DateTime dt, Catalog c) {
             dateTime = dt;
-            catalog = c;
+            Catalog = c;
         }
 
         public DateTime GetDateTime() {
@@ -30,9 +28,9 @@ namespace Data {
         }
     }
 
-    public class UpdateCatolog : EventCatalog {
+    public class UpdateCatalog : EventCatalog {
 
-        public UpdateCatolog(DateTime dt, Catalog c) : base(dt, c) {
+        public UpdateCatalog(DateTime dt, Catalog c) : base(dt, c) {
 
         }
 
