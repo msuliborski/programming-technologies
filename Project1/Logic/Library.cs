@@ -16,7 +16,7 @@ namespace Logic {
         public Book RentBook(string author, string title) {
             Catalog catalog = dataRepository.GetCatalog(author, title);
             Book book = dataRepository.GetBook(catalog);
-            if (book != null) {
+            if(book != null) {
                 catalog.Books.Remove(book);
                 dataRepository.AddEvent(new RentBook(DateTime.Now, book));
             }
@@ -32,8 +32,8 @@ namespace Logic {
             book.Catalog.Books.Remove(book);
             book.Catalog = null;
             dataRepository.AddEvent(new DeleteBook(DateTime.Now, book));
-        } 
-          #endregion
+        }
+        #endregion
 
         #region Reader
         public void AddReader(Reader reader) {
@@ -43,7 +43,7 @@ namespace Logic {
 
         public void AddReader(int id, string fistName, string lastName) {
             Reader reader = new Reader(id, fistName, lastName);
-             dataRepository.AddReader(reader);
+            dataRepository.AddReader(reader);
             dataRepository.AddEvent(new AddReader(DateTime.Now, reader));
         }
 
@@ -54,7 +54,7 @@ namespace Logic {
 
         public void DeleteReader(int id) {
             Reader reader = dataRepository.GetReader(id);
-            if (reader != null) {
+            if(reader != null) {
                 dataRepository.DeleteReader(id);
                 dataRepository.AddEvent(new DeleteReader(DateTime.Now, reader));
             }
@@ -62,7 +62,7 @@ namespace Logic {
 
         public void UpdateReader(int id, Reader reader) {
             Reader r = dataRepository.GetReader(id);
-            if (r != null) {
+            if(r != null) {
                 dataRepository.UpdateReader(id, reader);
                 dataRepository.AddEvent(new UpdateReader(DateTime.Now, reader));
             }
@@ -87,7 +87,7 @@ namespace Logic {
 
         public void UpdateCatalog(int index, Catalog catalog) {
             Catalog c = dataRepository.GetCatalog(index);
-            if (c != null) {
+            if(c != null) {
                 dataRepository.UpdateCatalog(index, catalog);
                 dataRepository.AddEvent(new UpdateCatalog(DateTime.Now, catalog));
             }
@@ -95,7 +95,7 @@ namespace Logic {
 
         public void DeleteCatalog(int index) {
             Catalog catalog = dataRepository.GetCatalog(index);
-            if (catalog != null) {
+            if(catalog != null) {
                 dataRepository.DeleteCatalog(index);
                 dataRepository.AddEvent(new DeleteCatalog(DateTime.Now, catalog));
             }
@@ -103,7 +103,7 @@ namespace Logic {
 
         public void DeleteCatalog(string author, string title) {
             Catalog catalog = dataRepository.GetCatalog(author, title);
-            if (catalog != null) {
+            if(catalog != null) {
                 dataRepository.DeleteCatalog(author, title);
                 dataRepository.AddEvent(new DeleteCatalog(DateTime.Now, catalog));
             }
@@ -121,12 +121,12 @@ namespace Logic {
 
         public IEnumerable<IEvent> GetEventsForReader(Reader reader) {
             List<IEvent> userEvents = new List<IEvent>();
-            foreach (IEvent ievent in GetAllEvents()) {
-                if (ievent.GetEventType() == EventType.AddReader ||
+            foreach(IEvent ievent in GetAllEvents()) {
+                if(ievent.GetEventType() == EventType.AddReader ||
                     ievent.GetEventType() == EventType.UpdateReader ||
                     ievent.GetEventType() == EventType.DeleteReader) {
                     EventReader eventReader = ievent as EventReader;
-                    if (eventReader.Reader == reader) {
+                    if(eventReader.Reader == reader) {
                         userEvents.Add(eventReader);
                     }
                 }
@@ -136,12 +136,12 @@ namespace Logic {
 
         public IEnumerable<IEvent> GetEventsForCatalog(Catalog catalog) {
             List<IEvent> catalogEvents = new List<IEvent>();
-            foreach (IEvent ievent in GetAllEvents()) {
-                if (ievent.GetEventType() == EventType.AddCatalog ||
+            foreach(IEvent ievent in GetAllEvents()) {
+                if(ievent.GetEventType() == EventType.AddCatalog ||
                     ievent.GetEventType() == EventType.UpdateCatalog ||
                     ievent.GetEventType() == EventType.DeleteCatalog) {
                     EventCatalog eventCatalog = ievent as EventCatalog;
-                    if (eventCatalog.Catalog == catalog) {
+                    if(eventCatalog.Catalog == catalog) {
                         catalogEvents.Add(eventCatalog);
                     }
                 }
@@ -152,11 +152,11 @@ namespace Logic {
 
         public IEnumerable<IEvent> GetEventsForBook(Book book) {
             List<IEvent> bookEvents = new List<IEvent>();
-            foreach (IEvent ievent in GetAllEvents()) {
-                if (ievent.GetEventType() == EventType.AddBook ||
+            foreach(IEvent ievent in GetAllEvents()) {
+                if(ievent.GetEventType() == EventType.AddBook ||
                     ievent.GetEventType() == EventType.DeleteBook) {
                     EventBook eventBook = ievent as EventBook;
-                    if (eventBook.Book == book) {
+                    if(eventBook.Book == book) {
                         bookEvents.Add(eventBook);
                     }
                 }
@@ -166,8 +166,8 @@ namespace Logic {
 
         public IEnumerable<IEvent> GetEventsBetweenDates(DateTime startDate, DateTime endDate) {
             List<IEvent> events = new List<IEvent>();
-            foreach (IEvent ievent in GetAllEvents()) {
-                if (ievent.GetDateTime() >= startDate && ievent.GetDateTime() <= endDate) {
+            foreach(IEvent ievent in GetAllEvents()) {
+                if(ievent.GetDateTime() >= startDate && ievent.GetDateTime() <= endDate) {
                     events.Add(ievent);
                 }
             }

@@ -8,9 +8,96 @@ namespace DataTest {
     [TestClass]
     public class DataTest {
 
+
+        private DataRepository dataRepository;
+
+        [TestInitialize]
+        public void Fill() {
+
+            dataRepository = new DataRepository();
+
+            Catalog c1 = new Catalog("Shakespeare", "Sonnet 116");
+            c1.Books.Add(new Book(c1, 1));
+            c1.Books.Add(new Book(c1, 2));
+            c1.Books.Add(new Book(c1, 3));
+            this.dataRepository.AddCatalog(c1);
+
+            Catalog c2 = new Catalog("Shakespeare", "Sonnet 130");
+            c2.Books.Add(new Book(c2, 4));
+            this.dataRepository.AddCatalog(c2);
+
+            Catalog c3 = new Catalog("Hemingway", "The Old Man and the Sea");
+            c3.Books.Add(new Book(c3, 5));
+            c3.Books.Add(new Book(c3, 6));
+            this.dataRepository.AddCatalog(c3);
+
+            Catalog c4 = new Catalog("Hemingway", "The Sun Also Rises");
+            c4.Books.Add(new Book(c4, 7));
+            c4.Books.Add(new Book(c4, 8));
+            this.dataRepository.AddCatalog(c4);
+
+            Catalog c5 = new Catalog("King", "It");
+            c5.Books.Add(new Book(c5, 9));
+            c5.Books.Add(new Book(c5, 10));
+            this.dataRepository.AddCatalog(c5);
+
+            Catalog c6 = new Catalog("King", "The Shining");
+            c6.Books.Add(new Book(c6, 11));
+            this.dataRepository.AddCatalog(c6);
+
+            Catalog c7 = new Catalog("J. K. Rowling", "Harry Potter and the Deathly Hallows");
+            c7.Books.Add(new Book(c7, 12));
+            this.dataRepository.AddCatalog(c7);
+
+            Catalog c8 = new Catalog("J. K. Rowling", "Harry Potter and the Goblet of Fire");
+            c8.Books.Add(new Book(c8, 13));
+            c8.Books.Add(new Book(c8, 14));
+            this.dataRepository.AddCatalog(c8);
+
+            Catalog c9 = new Catalog("Twain", "Adventures of Huckleberry Finn");
+            c9.Books.Add(new Book(c9, 15));
+            c9.Books.Add(new Book(c9, 16));
+            this.dataRepository.AddCatalog(c9);
+
+            Catalog c10 = new Catalog("Twain", "Adventures of Tom Sawyer");
+            c10.Books.Add(new Book(c10, 17));
+            c10.Books.Add(new Book(c10, 18));
+            c10.Books.Add(new Book(c10, 19));
+            this.dataRepository.AddCatalog(c10);
+
+            Catalog c11 = new Catalog("Author1", "Book1");
+            c11.Books.Add(new Book(c11, 20));
+            c11.Books.Add(new Book(c11, 21));
+            c11.Books.Add(new Book(c11, 22));
+            this.dataRepository.AddCatalog(c11);
+
+            Catalog c12 = new Catalog("Author2", "Book2");
+            c12.Books.Add(new Book(c12, 23));
+            c12.Books.Add(new Book(c12, 24));
+            c12.Books.Add(new Book(c12, 25));
+            this.dataRepository.AddCatalog(c12);
+
+
+
+            Reader r1 = new Reader(1, "John", "Kowalsky");
+            r1.Books.Add(new Book(c5, 26));
+            r1.Books.Add(new Book(c9, 27));
+            r1.Books.Add(new Book(c10, 28));
+            this.dataRepository.AddReader(r1);
+
+            Reader r2 = new Reader(2, "Adam", "Nowak");
+            r2.Books.Add(new Book(c2, 29));
+            r2.Books.Add(new Book(c9, 30));
+            this.dataRepository.AddReader(r2);
+
+            Reader r3 = new Reader(3, "Reader", "Reader");
+            r3.Books.Add(new Book(c11, 31));
+            r3.Books.Add(new Book(c12, 31));
+            this.dataRepository.AddReader(r3);
+        }
+
         [TestMethod]
         public void FillTest() {
-            DataRepository dataRepository = new DataRepository();
 
             Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
             Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 3);
@@ -32,7 +119,6 @@ namespace DataTest {
 
         [TestMethod]
         public void BookHandleTest() {
-            DataRepository dataRepository = new DataRepository();
 
             Catalog c = dataRepository.GetCatalog(0);
 
@@ -45,7 +131,6 @@ namespace DataTest {
 
         [TestMethod]
         public void ReaderTest() {
-            DataRepository dataRepository = new DataRepository();
 
             Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 3);
             dataRepository.AddReader(new Reader(90, "test10", "test20"));
@@ -78,7 +163,6 @@ namespace DataTest {
 
         [TestMethod]
         public void CatalogTest() {
-            DataRepository dataRepository = new DataRepository();
 
             Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
             dataRepository.AddCatalog(new Catalog("test1", "test2"));
