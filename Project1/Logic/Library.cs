@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Data;
 
 
@@ -42,6 +41,12 @@ namespace Logic {
             dataRepository.AddEvent(new AddReader(DateTime.Now, reader));
         }
 
+        public void AddReader(int id, string fistName, string lastName) {
+            Reader reader = new Reader(id, fistName, lastName);
+             dataRepository.AddReader(reader);
+            dataRepository.AddEvent(new AddReader(DateTime.Now, reader));
+        }
+
         public void DeleteReader(Reader reader) {
             dataRepository.DeleteReader(reader.Id);
             dataRepository.AddEvent(new DeleteReader(DateTime.Now, reader));
@@ -62,6 +67,113 @@ namespace Logic {
                 dataRepository.AddEvent(new UpdateReader(DateTime.Now, reader));
             }
         }
+
+        public IEnumerable<Reader> GetAllReaders() {
+            return dataRepository.GetAllReaders();
+        }
+        #endregion
+
+        #region Catalog
+        public void AddCatalog(Catalog catalog) {
+            dataRepository.AddCatalog(catalog);
+            dataRepository.AddEvent(new AddCatalog(DateTime.Now, catalog));
+        }
+
+        public void AddCatalog(string author, string title) {
+            Catalog catalog = new Catalog(author, title);
+            dataRepository.AddCatalog(catalog);
+            dataRepository.AddEvent(new AddCatalog(DateTime.Now, catalog));
+        }
+
+        public void UpdateCatalog(int index, Catalog catalog) {
+            Catalog c = dataRepository.GetCatalog(index);
+            if (c != null) {
+                dataRepository.UpdateCatalog(index, catalog);
+                dataRepository.AddEvent(new UpdateCatalog(DateTime.Now, catalog));
+            }
+        }
+
+        public void DeleteCatalog(int index) {
+            Catalog catalog = dataRepository.GetCatalog(index);
+            if (catalog != null) {
+                dataRepository.DeleteCatalog(index);
+                dataRepository.AddEvent(new DeleteCatalog(DateTime.Now, catalog));
+            }
+        }
+
+        public void DeleteCatalog(string author, string title) {
+            Catalog catalog = dataRepository.GetCatalog(author, title);
+            if (catalog != null) {
+                dataRepository.DeleteCatalog(author, title);
+                dataRepository.AddEvent(new DeleteCatalog(DateTime.Now, catalog));
+            }
+        }
+
+        public IEnumerable<Catalog> GetAllCatalogs() {
+            return dataRepository.GetAllCatalogs();
+        }
+        #endregion
+
+        #region Events
+        public IEnumerable<IEvent> GetAllEvents() {
+            return dataRepository.GetAllEvents();
+        }
+
+        public IEnumerable<IEvent> GetEventsForReader(Reader reader) {
+            List<IEvent> userEvents = new List<IEvent>();
+            foreach (IEvent ievent in GetAllEvents()) {
+                if (ievent.GetEventType() == EventType.AddReader ||
+                    ievent.GetEventType() == EventType.UpdateReader ||
+                    ievent.GetEventType() == EventType.DeleteReader) {
+                    EventReader eventReader = ievent as EventReader;
+                    if (eventReader.Reader == reader) {
+                        userEvents.Add(eventReader);
+                    }
+                }
+            }
+            return userEvents;
+        }
+
+        public IEnumerable<IEvent> GetEventsForCatalog(Catalog catalog) {
+            List<IEvent> catalogEvents = new List<IEvent>();
+            foreach (IEvent ievent in GetAllEvents()) {
+                if (ievent.GetEventType() == EventType.AddCatalog ||
+                    ievent.GetEventType() == EventType.UpdateCatalog ||
+                    ievent.GetEventType() == EventType.DeleteCatalog) {
+                    EventCatalog eventCatalog = ievent as EventCatalog;
+                    if (eventCatalog.Catalog == catalog) {
+                        catalogEvents.Add(eventCatalog);
+                    }
+                }
+            }
+            return catalogEvents;
+        }
+
+
+        public IEnumerable<IEvent> GetEventsForBook(Book book) {
+            List<IEvent> bookEvents = new List<IEvent>();
+            foreach (IEvent ievent in GetAllEvents()) {
+                if (ievent.GetEventType() == EventType.AddBook ||
+                    ievent.GetEventType() == EventType.DeleteBook) {
+                    EventBook eventBook = ievent as EventBook;
+                    if (eventBook.Book == book) {
+                        bookEvents.Add(eventBook);
+                    }
+                }
+            }
+            return bookEvents;
+        }
+
+        public IEnumerable<IEvent> GetEventsBetweenDates(DateTime startDate, DateTime endDate) {
+            List<IEvent> events = new List<IEvent>();
+            foreach (IEvent ievent in GetAllEvents()) {
+                if (ievent.GetDateTime() >= startDate && ievent.GetDateTime() <= endDate) {
+                    events.Add(ievent);
+                }
+            }
+            return events;
+        }
+
         #endregion
     }
 }

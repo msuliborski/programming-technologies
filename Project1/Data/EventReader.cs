@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Data {
     public abstract class EventReader : IEvent {
         protected DateTime dateTime;
-        protected Reader reader;
+        public Reader Reader { get; set; }
 
         public EventReader(DateTime dt, Reader r) {
             dateTime = dt;
-            reader = r;
+            Reader = r;
         }
 
         public DateTime GetDateTime() {

@@ -5,11 +5,11 @@ using System.Text;
 namespace Data {
     public abstract class EventBook : IEvent {
         protected DateTime dateTime;
-        protected Book book;
+        public Book Book { get; set; }
 
         public EventBook(DateTime dt, Book b) {
             dateTime = dt;
-            book = b;
+            Book = b;
         }
 
         public DateTime GetDateTime() {

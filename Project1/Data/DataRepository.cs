@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+
 
 namespace Data {
     public class DataRepository {
@@ -90,14 +89,7 @@ namespace Data {
             data.Catalogs.Add(c);
         }
 
-        public void AddCatalog(string author, string title) {
-            data.Catalogs.Add(new Catalog(author, title));
-        }
-
-        public void AddCatalog(string author, string title, List<Book> books) {
-            data.Catalogs.Add(new Catalog(author, title, books));
-        }
-
+        
         public Catalog GetCatalog(string author, string title) {
             foreach(Catalog c in data.Catalogs) {
                 if(c.Author.Equals(author) && c.Title.Equals(title)) {
@@ -153,11 +145,7 @@ namespace Data {
             data.Readers.Add(r);
         }
 
-        public void AddReader(int id, string fistName, string lastName) {
-            data.Readers.Add(new Reader(id, fistName, lastName));
-        }
-
-        public Reader GetReader(int id) {
+       public Reader GetReader(int id) {
             foreach(Reader r in data.Readers) {
                 if(r.Id == id) {
                     return r;
@@ -180,6 +168,10 @@ namespace Data {
                     break;
                 }
             }
+        }
+
+        public IEnumerable<Reader> GetAllReaders() {
+            return data.Readers;
         }
     #endregion
 
