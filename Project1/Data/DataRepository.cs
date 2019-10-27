@@ -26,7 +26,7 @@ namespace Data {
             data.Fill(this);
         }
 
-        //Catalog
+        #region Catalog
         public void AddCatalog(Catalog c) {
             data.Catalogs.Add(c);
         }
@@ -87,8 +87,9 @@ namespace Data {
                 data.Catalogs.Remove(c);
             }
         }
+        #endregion
 
-        //Reader
+        #region Reader
         public void AddReader(Reader r) {
             data.Readers.Add(r);
         }
@@ -106,17 +107,50 @@ namespace Data {
             return null;
         }
 
-        //Events
+        public void DeleteReader(int id) {
+            Reader reader = GetReader(id);
+            if (reader != null) {
+                data.Readers.Remove(reader);
+            }
+        }
+
+        public void UpdateReader(int id, Reader reader) {
+            for (int i = 0; i < data.Readers.Count; i++) {
+                if (data.Readers[i].Id == id) {
+                    data.Readers[i] = reader;
+                    break;
+                }
+            }
+        }
+    #endregion
+
+        #region Events
         public void AddEvent(IEvent e) {
             data.Events.Add(e);
         }
 
-        public IEvent GetEvent(int id) {
-            return data.Events[id];
+        public IEvent GetEvent(int index) {
+            if (index >= 0 && index < data.Events.Count) {
+                return data.Events[index];
+            }
+            return null;
         }
 
         public IEnumerable<IEvent> GetAllEvents() {
             return data.Events;
         }
+        #endregion
+
+
+        #region Book
+        public Book GetBook(Catalog catalog) {
+            if (catalog.Books.Count != 0) {
+                Book book = catalog.Books[catalog.Books.Count - 1];
+                return book;
+            }
+            return null;
+        }
+
+        #endregion
     }
 }
