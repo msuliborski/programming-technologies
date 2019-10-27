@@ -50,7 +50,7 @@ namespace DataTest {
             Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 3);
             dataRepository.AddReader(new Reader(90, "test10", "test20"));
             Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 4);
-            dataRepository.AddReader(91, "test11", "test21");
+            dataRepository.AddReader(new Reader(91, "test11", "test21"));
             Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 5);
 
             Assert.IsTrue(dataRepository.GetReader(91).FirstName.Equals("test11"));
