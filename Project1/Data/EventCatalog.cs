@@ -3,23 +3,52 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Data {
-    public class AddCatalog : IEvent {
+    public abstract class EventCatalog : IEvent {
+        protected DateTime dateTime;
+        protected Catalog catalog;
+
+        public EventCatalog(DateTime dt, Catalog c) {
+            dateTime = dt;
+            catalog = c;
+        }
+
+        public DateTime GetDateTime() {
+            return dateTime;
+        }
+
+        public abstract EventType GetEventType();
+    }
+
+    public class AddCatalog : EventCatalog {
+
+        public AddCatalog(DateTime dt, Catalog c) : base(dt, c) {
+
+        }
 
         public override EventType GetEventType() {
             return EventType.AddCatalog;
         }
+    }
 
+    public class UpdateCatolog : EventCatalog {
 
-        private Type type; 
+        public UpdateCatolog(DateTime dt, Catalog c) : base(dt, c) {
 
-        public AddCatalog() {
-            this.price = price;
-            this.user = user;
         }
 
+        public override EventType GetEventType() {
+            return EventType.UpdateCatalog;
+        }
+    }
 
-        public void execute() {
-            throw new NotImplementedException();
+    public class DeleteCatalog : EventCatalog {
+
+        public DeleteCatalog(DateTime dt, Catalog c) : base(dt, c) {
+
+        }
+
+        public override EventType GetEventType() {
+            return EventType.DeleteCatalog;
         }
     }
 }
