@@ -2,14 +2,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Data;
 
-namespace DataTest
-{
+namespace DataTest {
     [TestClass]
-    public class DataTest
-    {
+    public class DataTest {
         [TestMethod]
-        public void TestMethod1()
-        {
+        public void TestMethod1() {
             Console.WriteLine("test");
         }
     }

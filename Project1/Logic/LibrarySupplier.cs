@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Logic
-{
-    class LibrarySupplier
-    {
+namespace Logic {
+    class LibrarySupplier {
     }
 }

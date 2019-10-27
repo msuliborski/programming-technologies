@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data
-{
-    public class DataSupplier
-    {
+namespace Data {
+    public class DataSupplier {
 
     }
 }

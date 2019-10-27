@@ -1,14 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogicTest
-{
+namespace LogicTest {
     [TestClass]
-    public class LogicTest
-    {
+    public class LogicTest {
         [TestMethod]
-        public void TestMethod1()
-        {
+        public void TestMethod1() {
         }
     }
 }

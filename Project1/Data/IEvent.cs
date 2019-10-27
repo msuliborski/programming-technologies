@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data
-{
-    public interface IEvent
-    {
+namespace Data {
+    public interface IEvent {
         void execute();
     }
 }

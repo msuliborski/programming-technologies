@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data
-{
-    public class Book
-    {
+namespace Data {
+    public class Book {
         public Catalog Catalog;
         public int IdNumber { get; set; }
 
