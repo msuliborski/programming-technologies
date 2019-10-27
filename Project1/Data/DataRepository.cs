@@ -16,10 +16,13 @@ namespace Data {
 
         }
 
+        public int CurrentBookId { get; set; }
+
         private DataContext data { get; set; }
 
         public DataRepository() {
             data = new DataContext();
+            CurrentBookId = 0;
         }
 
         #region Catalog
@@ -139,6 +142,12 @@ namespace Data {
             return null;
         }
 
+        public void AddBook(Book book) {
+            if (book.Catalog != null) {
+                book.Catalog.Books.Add(book);
+                CurrentBookId++;
+            }
+        }
         #endregion
     }
 }

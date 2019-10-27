@@ -113,14 +113,17 @@ namespace LogicTest {
         
         [TestMethod]
         public void BookTest() {
-            //int count = library.ge
+            Catalog catalog = library.GetCatalog("Twain", "Adventures of Huckleberry Finn");
+            int count = catalog.Books.Count;
             Book book = library.RentBook("Twain", "Adventures of Huckleberry Finn");
+            Assert.AreEqual(catalog.Books.Count, count - 1);
+            library.ReturnBook(book);
+            Assert.AreEqual(catalog.Books.Count, count);
+            library.DeleteBook(book);
+            Assert.AreEqual(catalog.Books.Count, count - 1);
+            library.AddBook(book);
+            Assert.AreEqual(library.GetEventsForBook(book).ToList().Count, 4);
         }
-
-        [TestMethod]
-        public void EventsTest() {
-        }
-
 
     }
 }

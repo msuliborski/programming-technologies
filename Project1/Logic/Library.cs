@@ -35,9 +35,26 @@ namespace Logic {
 
         public void DeleteBook(Book book) {
             book.Catalog.Books.Remove(book);
-            book.Catalog = null;
             dataRepository.AddEvent(new DeleteBook(DateTime.Now, book));
         }
+
+        public void AddBook(Book book) {
+           if (book.Catalog != null) {
+                dataRepository.AddBook(book);
+                dataRepository.AddEvent(new AddBook(DateTime.Now, book));
+            }
+            
+        }
+
+        public void AddBook(string author, string title) {
+            Catalog catalog = dataRepository.GetCatalog(author, title);
+            if (catalog != null) {
+                Book book = new Book(catalog, dataRepository.CurrentBookId);
+                dataRepository.AddBook(book);
+                dataRepository.AddEvent(new AddBook(DateTime.Now, book));
+            }
+        }
+
         #endregion
 
         #region Reader
@@ -166,9 +183,11 @@ namespace Logic {
 
         public IEnumerable<IEvent> GetEventsForBook(Book book) {
             List<IEvent> bookEvents = new List<IEvent>();
-            foreach(IEvent ievent in GetAllEvents()) {
-                if(ievent.GetEventType() == EventType.AddBook ||
-                    ievent.GetEventType() == EventType.DeleteBook) {
+            foreach (IEvent ievent in GetAllEvents()) {
+                if (ievent.GetEventType() == EventType.AddBook ||
+                    ievent.GetEventType() == EventType.DeleteBook ||
+                    ievent.GetEventType() == EventType.RentBook ||
+                    ievent.GetEventType() == EventType.ReturnBook) {
                     EventBook eventBook = ievent as EventBook;
                     if(eventBook.Book == book) {
                         bookEvents.Add(eventBook);
