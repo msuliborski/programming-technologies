@@ -18,19 +18,23 @@ namespace Logic {
         }
 
 
-        public Book RentBook(string author, string title) {
+        public Book RentBook(string author, string title, Reader reader) {
             Catalog catalog = dataRepository.GetCatalog(author, title);
             Book book = dataRepository.GetBook(catalog);
             if(book != null) {
                 catalog.Books.Remove(book);
-                dataRepository.AddEvent(new RentBook(DateTime.Now, book));
+                reader.Books.Add(book);
+                dataRepository.AddEvent(new RentBook(DateTime.Now, book, reader));
             }
             return book;
         }
 
-        public void ReturnBook(Book book) {
-            book.Catalog.Books.Add(book);
-            dataRepository.AddEvent(new ReturnBook(DateTime.Now, book));
+        public void ReturnBook(Book book, Reader reader) {
+            if (reader.Books.Contains(book)) {
+                book.Catalog.Books.Add(book);
+                reader.Books.Remove(book);
+                dataRepository.AddEvent(new ReturnBook(DateTime.Now, book, reader));
+            }
         }
 
         public void DeleteBook(Book book) {
@@ -153,12 +157,22 @@ namespace Logic {
         public IEnumerable<IEvent> GetEventsForReader(Reader reader) {
             List<IEvent> userEvents = new List<IEvent>();
             foreach(IEvent ievent in GetAllEvents()) {
-                if(ievent.GetEventType() == EventType.AddReader ||
+                if (ievent.GetEventType() == EventType.AddReader ||
                     ievent.GetEventType() == EventType.UpdateReader ||
                     ievent.GetEventType() == EventType.DeleteReader) {
                     EventReader eventReader = ievent as EventReader;
-                    if(eventReader.Reader == reader) {
+                    if (eventReader.Reader == reader) {
                         userEvents.Add(eventReader);
+                    }
+                } else if (ievent.GetEventType() == EventType.RentBook) {
+                    RentBook rentBook = ievent as RentBook;
+                    if (rentBook.Reader == reader) {
+                        userEvents.Add(rentBook);
+                    }
+                } else if (ievent.GetEventType() == EventType.ReturnBook) {
+                    ReturnBook returnBook = ievent as ReturnBook;
+                    if (returnBook.Reader == reader) {
+                        userEvents.Add(returnBook);
                     }
                 }
             }

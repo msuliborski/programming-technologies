@@ -163,14 +163,18 @@ namespace LogicTest {
 
         [TestMethod]
         public void BookTest() {
+            Reader reader = library.GetReader(3);
             Catalog catalog = library.GetCatalog("Twain", "Adventures of Huckleberry Finn");
-            int count = catalog.Books.Count;
-            Book book = library.RentBook("Twain", "Adventures of Huckleberry Finn");
-            Assert.AreEqual(catalog.Books.Count, count - 1);
-            library.ReturnBook(book);
-            Assert.AreEqual(catalog.Books.Count, count);
+            int catalogCount = catalog.Books.Count;
+            int readerCount = reader.Books.Count;
+            Book book = library.RentBook("Twain", "Adventures of Huckleberry Finn", reader);
+            Assert.AreEqual(reader.Books.Count, readerCount + 1);
+            Assert.AreEqual(catalog.Books.Count, catalogCount - 1);
+            library.ReturnBook(book, reader);
+            Assert.AreEqual(catalog.Books.Count, catalogCount);
+            Assert.AreEqual(reader.Books.Count, readerCount);
             library.DeleteBook(book);
-            Assert.AreEqual(catalog.Books.Count, count - 1);
+            Assert.AreEqual(catalog.Books.Count, catalogCount - 1);
             library.AddBook(book);
             Assert.AreEqual(library.GetEventsForBook(book).ToList().Count, 4);
         }
@@ -178,28 +182,34 @@ namespace LogicTest {
 
         [TestMethod]
         public void EventTest() {
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 0);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 0);
 
             library.AddReader(new Reader(99, "test1", "test1"));
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 1);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 1);
 
             library.DeleteReader(99);
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 2);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 2);
 
             library.AddCatalog(new Catalog("test", "test"));
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 3);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 3);
 
             library.DeleteCatalog(1);
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 4);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 4);
 
-            library.RentBook("Shakespeare", "Sonnet 116");
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 5);
+            Reader reader = library.GetReader(2);
+            Book book = library.GetBook("Shakespeare", "Sonnet 116");
+            library.RentBook("Shakespeare", "Sonnet 116", reader);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 5);
 
-            library.ReturnBook(new Book(new Catalog("test", "test"), 99));
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 6);
+            library.ReturnBook(book, reader);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 6);
+
+            library.DeleteReader(2);
+
+            Assert.AreEqual(library.GetEventsForReader(reader).ToList().Count, 3);
 
             library.DeleteBook(new Book(new Catalog("test", "test"), 99));
-            Assert.IsTrue(library.GetAllEvents().ToList().Count == 7);
+            Assert.AreEqual(library.GetAllEvents().ToList().Count, 8);
         }
 
     }

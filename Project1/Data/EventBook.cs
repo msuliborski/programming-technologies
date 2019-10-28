@@ -32,8 +32,10 @@ namespace Data {
 
     public class RentBook : EventBook {
 
-        public RentBook(DateTime dt, Book b) : base(dt, b) {
+        public Reader Reader { get; set; }
 
+        public RentBook(DateTime dt, Book b, Reader r) : base(dt, b) {
+            Reader = r;
         }
 
         public override EventType GetEventType() {
@@ -54,8 +56,10 @@ namespace Data {
 
     public class ReturnBook : EventBook {
 
-        public ReturnBook(DateTime dt, Book b) : base(dt, b) {
+        public Reader Reader { get; set; }
 
+        public ReturnBook(DateTime dt, Book b, Reader r) : base(dt, b) {
+            Reader = r;
         }
 
         public override EventType GetEventType() {
