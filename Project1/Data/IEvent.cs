@@ -8,6 +8,7 @@ namespace Data {
         AddReader, UpdateReader, DeleteReader,
         AddBook, RentBook, DeleteBook, ReturnBook
     }
+
     public interface IEvent {
         EventType GetEventType();
         DateTime GetDateTime();

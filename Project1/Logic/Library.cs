@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Data;
 
-
 namespace Logic {
     public class Library {
         private DataRepository dataRepository;
@@ -11,12 +10,10 @@ namespace Logic {
             this.dataRepository = dataRepository;
         }
 
-
         #region Book
         public Book GetBook(string author, string title) {
             return dataRepository.GetBook(dataRepository.GetCatalog(author, title));
         }
-
 
         public Book RentBook(string author, string title, Reader reader) {
             Catalog catalog = dataRepository.GetCatalog(author, title);
@@ -30,7 +27,7 @@ namespace Logic {
         }
 
         public void ReturnBook(Book book, Reader reader) {
-            if (reader.Books.Contains(book)) {
+            if(reader.Books.Contains(book)) {
                 book.Catalog.Books.Add(book);
                 reader.Books.Remove(book);
                 dataRepository.AddEvent(new ReturnBook(DateTime.Now, book, reader));
@@ -43,26 +40,25 @@ namespace Logic {
         }
 
         public void AddBook(Book book) {
-           if (book.Catalog != null) {
+            if(book.Catalog != null) {
                 dataRepository.AddBook(book);
                 dataRepository.AddEvent(new AddBook(DateTime.Now, book));
             }
-            
+
         }
 
         public void AddBook(string author, string title) {
             Catalog catalog = dataRepository.GetCatalog(author, title);
-            if (catalog != null) {
+            if(catalog != null) {
                 Book book = new Book(catalog, dataRepository.CurrentBookId);
                 dataRepository.AddBook(book);
                 dataRepository.AddEvent(new AddBook(DateTime.Now, book));
             }
         }
-
         #endregion
 
-        #region Reader
 
+        #region Reader
         public Reader GetReader(int id) {
             return dataRepository.GetReader(id);
         }
@@ -103,6 +99,7 @@ namespace Logic {
             return dataRepository.GetAllReaders();
         }
         #endregion
+
 
         #region Catalog
         public Catalog GetCatalog(string author, string title) {
@@ -149,6 +146,7 @@ namespace Logic {
         }
         #endregion
 
+
         #region Events
         public IEnumerable<IEvent> GetAllEvents() {
             return dataRepository.GetAllEvents();
@@ -157,21 +155,21 @@ namespace Logic {
         public IEnumerable<IEvent> GetEventsForReader(Reader reader) {
             List<IEvent> userEvents = new List<IEvent>();
             foreach(IEvent ievent in GetAllEvents()) {
-                if (ievent.GetEventType() == EventType.AddReader ||
+                if(ievent.GetEventType() == EventType.AddReader ||
                     ievent.GetEventType() == EventType.UpdateReader ||
                     ievent.GetEventType() == EventType.DeleteReader) {
                     EventReader eventReader = ievent as EventReader;
-                    if (eventReader.Reader == reader) {
+                    if(eventReader.Reader == reader) {
                         userEvents.Add(eventReader);
                     }
-                } else if (ievent.GetEventType() == EventType.RentBook) {
+                } else if(ievent.GetEventType() == EventType.RentBook) {
                     RentBook rentBook = ievent as RentBook;
-                    if (rentBook.Reader == reader) {
+                    if(rentBook.Reader == reader) {
                         userEvents.Add(rentBook);
                     }
-                } else if (ievent.GetEventType() == EventType.ReturnBook) {
+                } else if(ievent.GetEventType() == EventType.ReturnBook) {
                     ReturnBook returnBook = ievent as ReturnBook;
-                    if (returnBook.Reader == reader) {
+                    if(returnBook.Reader == reader) {
                         userEvents.Add(returnBook);
                     }
                 }
@@ -197,8 +195,8 @@ namespace Logic {
 
         public IEnumerable<IEvent> GetEventsForBook(Book book) {
             List<IEvent> bookEvents = new List<IEvent>();
-            foreach (IEvent ievent in GetAllEvents()) {
-                if (ievent.GetEventType() == EventType.AddBook ||
+            foreach(IEvent ievent in GetAllEvents()) {
+                if(ievent.GetEventType() == EventType.AddBook ||
                     ievent.GetEventType() == EventType.DeleteBook ||
                     ievent.GetEventType() == EventType.RentBook ||
                     ievent.GetEventType() == EventType.ReturnBook) {
@@ -220,7 +218,6 @@ namespace Logic {
             }
             return events;
         }
-
         #endregion
     }
 }

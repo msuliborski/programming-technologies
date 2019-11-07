@@ -18,30 +18,23 @@ namespace Data {
     }
 
     public class AddReader : EventReader {
-
-        public AddReader(DateTime dt, Reader r) : base(dt, r) {
-
-        }
+        public AddReader(DateTime dt, Reader r) : base(dt, r) { }
 
         public override EventType GetEventType() {
             return EventType.AddReader;
         }
     }
+
     public class UpdateReader : EventReader {
-
-        public UpdateReader(DateTime dt, Reader r) : base(dt, r) {
-
-        }
+        public UpdateReader(DateTime dt, Reader r) : base(dt, r) { }
 
         public override EventType GetEventType() {
             return EventType.UpdateReader;
         }
     }
+
     public class DeleteReader : EventReader {
-
-        public DeleteReader(DateTime dt, Reader r) : base(dt, r) {
-
-        }
+        public DeleteReader(DateTime dt, Reader r) : base(dt, r) { }
 
         public override EventType GetEventType() {
             return EventType.DeleteReader;

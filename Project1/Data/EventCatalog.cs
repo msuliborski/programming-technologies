@@ -18,10 +18,7 @@ namespace Data {
     }
 
     public class AddCatalog : EventCatalog {
-
-        public AddCatalog(DateTime dt, Catalog c) : base(dt, c) {
-
-        }
+        public AddCatalog(DateTime dt, Catalog c) : base(dt, c) { }
 
         public override EventType GetEventType() {
             return EventType.AddCatalog;
@@ -29,10 +26,7 @@ namespace Data {
     }
 
     public class UpdateCatalog : EventCatalog {
-
-        public UpdateCatalog(DateTime dt, Catalog c) : base(dt, c) {
-
-        }
+        public UpdateCatalog(DateTime dt, Catalog c) : base(dt, c) { }
 
         public override EventType GetEventType() {
             return EventType.UpdateCatalog;
@@ -40,10 +34,7 @@ namespace Data {
     }
 
     public class DeleteCatalog : EventCatalog {
-
-        public DeleteCatalog(DateTime dt, Catalog c) : base(dt, c) {
-
-        }
+        public DeleteCatalog(DateTime dt, Catalog c) : base(dt, c) { }
 
         public override EventType GetEventType() {
             return EventType.DeleteCatalog;
