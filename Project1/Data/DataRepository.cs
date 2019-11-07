@@ -4,6 +4,8 @@
 namespace Data {
     public class DataRepository {
         public class DataContext {
+
+            public int CurrentBookId { get; set; }
             public List<Reader> Readers { get; set; }
             public List<Catalog> Catalogs { get; set; }
             public List<IEvent> Events { get; set; }
@@ -12,17 +14,20 @@ namespace Data {
                 Readers = new List<Reader>();
                 Catalogs = new List<Catalog>();
                 Events = new List<IEvent>();
+                CurrentBookId = 0;
             }
 
         }
 
-        public int CurrentBookId { get; set; }
+        
+        public int CurrentBookId {
+            get { return data.CurrentBookId; }
+        }
 
         private DataContext data { get; set; }
 
         public DataRepository() {
             data = new DataContext();
-            CurrentBookId = 0;
         }
 
         #region Catalog
@@ -145,7 +150,7 @@ namespace Data {
         public void AddBook(Book book) {
             if (book.Catalog != null) {
                 book.Catalog.Books.Add(book);
-                CurrentBookId++;
+                data.CurrentBookId++;
             }
         }
         #endregion
