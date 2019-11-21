@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Data {
+
+    [Serializable]
     public class Book {
         public Catalog Catalog;
         public int IdNumber { get; set; }

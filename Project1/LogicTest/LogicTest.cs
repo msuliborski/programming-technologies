@@ -12,9 +12,28 @@ namespace Tests {
 
         [TestInitialize]
         public void Fill() {
-
             dataRepository = new DataRepository(new DynamicFiller());
             library = new Library(dataRepository);
+        }
+
+        [TestMethod]
+        public void FillTest() {
+            Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
+            Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 3);
+            Assert.IsTrue(dataRepository.GetAllEvents().ToList().Count == 0);
+
+
+            Assert.IsTrue(dataRepository.GetCatalog(0).Author.Equals("Shakespeare"));
+            Assert.IsTrue(dataRepository.GetCatalog(0).Title.Equals("Sonnet 116"));
+            Assert.IsTrue(dataRepository.GetCatalog(0).Books.Count == 3);
+            Assert.IsTrue(dataRepository.GetCatalog(0).Books[0].IdNumber == 1);
+
+
+            Assert.IsTrue(dataRepository.GetReader(1).FirstName.Equals("John"));
+            Assert.IsTrue(dataRepository.GetReader(1).LastName.Equals("Kowalsky"));
+            Assert.IsTrue(dataRepository.GetReader(1).Id == 1);
+            Assert.IsTrue(dataRepository.GetReader(1).Books.Count == 3);
+            Assert.IsTrue(dataRepository.GetReader(1).Books[0].IdNumber == 26);
         }
 
         [TestMethod]

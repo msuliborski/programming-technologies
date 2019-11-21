@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 
-
 namespace Data {
     public class DataRepository {
-        private class DataContext{
+        private class DataContext {
 
-            
             public int CurrentBookId { get; set; }
             public List<Reader> Readers { get; set; }
             public List<Catalog> Catalogs { get; set; }
@@ -28,12 +26,14 @@ namespace Data {
             this.filler.Fill(this);
         }
 
-
         #region Catalog
         public void AddCatalog(Catalog c) {
             data.Catalogs.Add(c);
         }
 
+        public void SetCatalogs(List<Catalog> c) {
+            data.Catalogs = c;
+        }
 
         public Catalog GetCatalog(string author, string title) {
             foreach(Catalog c in data.Catalogs) {
@@ -89,6 +89,10 @@ namespace Data {
             data.Readers.Add(r);
         }
 
+        public void SetReaders(List<Reader> r) {
+            data.Readers = r;
+        }
+
         public Reader GetReader(int id) {
             foreach(Reader r in data.Readers) {
                 if(r.Id == id) {
@@ -119,24 +123,6 @@ namespace Data {
         }
         #endregion
 
-        #region Events
-        public void AddEvent(IEvent e) {
-            data.Events.Add(e);
-        }
-
-        public IEvent GetEvent(int index) {
-            if(index >= 0 && index < data.Events.Count) {
-                return data.Events[index];
-            }
-            return null;
-        }
-
-        public IEnumerable<IEvent> GetAllEvents() {
-            return data.Events;
-        }
-        #endregion
-
-
         #region Book
         public Book GetBook(Catalog catalog) {
             if(catalog.Books.Count != 0) {
@@ -158,5 +144,23 @@ namespace Data {
         }
 
         #endregion
+
+        #region Events
+        public void AddEvent(IEvent e) {
+            data.Events.Add(e);
+        }
+
+        public IEvent GetEvent(int index) {
+            if(index >= 0 && index < data.Events.Count) {
+                return data.Events[index];
+            }
+            return null;
+        }
+
+        public IEnumerable<IEvent> GetAllEvents() {
+            return data.Events;
+        }
+        #endregion
+
     }
 }

@@ -1,8 +1,6 @@
 ﻿namespace Data {
-    
-    public interface IFiller {
-        
-        void Fill(DataRepository dataRepository);
 
+    public interface IFiller {
+        void Fill(DataRepository dataRepository);
     }
 }

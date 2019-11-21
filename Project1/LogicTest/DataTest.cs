@@ -5,19 +5,15 @@ using System.Linq;
 namespace Tests {
     [TestClass]
     public class DataTest {
-
-
         private DataRepository dataRepository;
 
         [TestInitialize]
         public void Fill() {
             dataRepository = new DataRepository(new StaticFiller());
-            
         }
 
         [TestMethod]
         public void FillTest() {
-
             Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
             Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 3);
             Assert.IsTrue(dataRepository.GetAllEvents().ToList().Count == 0);
@@ -38,7 +34,6 @@ namespace Tests {
 
         [TestMethod]
         public void BookTest() {
-
             Catalog c = dataRepository.GetCatalog(0);
 
             Assert.IsTrue(dataRepository.GetBook(c).Catalog.Author.Equals("Shakespeare"));

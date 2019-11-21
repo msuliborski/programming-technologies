@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Data {
+
+    [Serializable]
     public class Catalog {
         public string Author { get; set; }
         public string Title { get; set; }
