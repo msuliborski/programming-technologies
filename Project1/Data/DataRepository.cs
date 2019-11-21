@@ -3,8 +3,9 @@
 
 namespace Data {
     public class DataRepository {
-        private class DataContext {
+        private class DataContext{
 
+            
             public int CurrentBookId { get; set; }
             public List<Reader> Readers { get; set; }
             public List<Catalog> Catalogs { get; set; }
@@ -19,9 +20,12 @@ namespace Data {
         }
 
         private DataContext data { get; set; }
+        private IFiller filler;
 
-        public DataRepository() {
+        public DataRepository(IFiller filler) {
             data = new DataContext();
+            this.filler = filler;
+            this.filler.Fill(this);
         }
 
 

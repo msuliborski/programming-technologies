@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTest", "DataTest\DataTest.csproj", "{988E8225-D60B-496C-9338-1FB03336843E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{6B35B163-2172-4FC6-9597-9ADFD994DE18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "LogicTest\Tests.csproj", "{6B35B163-2172-4FC6-9597-9ADFD994DE18}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{13CE2CB1-14E2-4509-B5B9-4AB50DCC4308}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{526B2FF8-7C5B-499E-97F1-2E1D8DFB0269}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{526B2FF8-7C5B-499E-97F1-2E1D8DFB0269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{988E8225-D60B-496C-9338-1FB03336843E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{988E8225-D60B-496C-9338-1FB03336843E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{988E8225-D60B-496C-9338-1FB03336843E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{988E8225-D60B-496C-9338-1FB03336843E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B35B163-2172-4FC6-9597-9ADFD994DE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B35B163-2172-4FC6-9597-9ADFD994DE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B35B163-2172-4FC6-9597-9ADFD994DE18}.Release|Any CPU.ActiveCfg = Release|Any CPU

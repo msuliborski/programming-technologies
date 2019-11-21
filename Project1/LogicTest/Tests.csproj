@@ -49,6 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicFiller.cs" />
+    <Compile Include="StaticFiller.cs" />
+    <Compile Include="DataTest.cs" />
     <Compile Include="LogicTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
