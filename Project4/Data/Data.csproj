@@ -9,6 +9,20 @@
     <StartupObject />
   </PropertyGroup>
 
+
+  <ItemGroup>
+<<<<<<< HEAD
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="LINQ to SQL\**" />
     <EmbeddedResource Remove="LINQ to SQL\**" />
@@ -17,11 +31,14 @@
 
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
+=======
+    <Reference Include="System.Data.DataSetExtensions" />
     <Compile Update="LibDataSet.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>LibDataSet.xsd</DependentUpon>
     </Compile>
+>>>>>>> 12abc1b4983a9f6a094b9663c49e5f0552dfadaf
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -30,10 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="LibDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>LibDataSet.Designer.cs</LastGenOutput>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
