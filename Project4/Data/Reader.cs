@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Data {
-
-    [Serializable]
+﻿namespace Data {
+    
     public partial class Reader {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public List<Book> Books { get; set; }
-
-        public Reader(int id, string firstName, string lastName) {
+       
+        public Reader(int id, string firstName, string lastName) : this() {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            Books = new List<Book>();
+        }
+
+
+        public Reader(string firstName, string lastName) : this() {
+            FirstName = firstName;
+            LastName = lastName;
         }
     }
 }

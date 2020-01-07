@@ -25,6 +25,9 @@ namespace Data {
             this.filler = filler;
             this.filler.Fill(this);
         }
+        public DataRepository() {
+            data = new DataContext();
+        }
 
         #region Catalog
         public void AddCatalog(Catalog c) {
