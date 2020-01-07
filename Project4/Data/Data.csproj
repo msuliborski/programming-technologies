@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LINQ to SQL\**" />
+    <EmbeddedResource Remove="LINQ to SQL\**" />
+    <None Remove="LINQ to SQL\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
     <Compile Update="LibDataSet.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -32,10 +38,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="LINQ to SQL\" />
   </ItemGroup>
 
   <ItemGroup>

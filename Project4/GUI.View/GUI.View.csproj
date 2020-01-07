@@ -55,7 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -63,8 +63,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="MainWindowView.xaml.cs">
+      <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -95,17 +95,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{13CE2CB1-14E2-4509-B5B9-4AB50DCC4308}</Project>
-      <Name>Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GUI\GUI.csproj">
       <Project>{cdd17eee-4260-4701-99b7-6f3e118d57a8}</Project>
       <Name>GUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logic\Logic.csproj">
-      <Project>{526b2ff8-7c5b-499e-97f1-2e1d8dfb0269}</Project>
-      <Name>Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

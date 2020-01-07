@@ -1,83 +1,105 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using Data;
 using GUI.Model;
 using Logic;
 
 namespace GUI.ViewModel {
-    public class MainViewModel {
+    public class MainWindowViewModel : INotifyPropertyChanged {
 
-        #region constructors
-        public MainViewModel() {
-            m_ActionText = "Text to be displayed on the popup";
+        public MainWindowViewModel() {
+            //HiButtonCommand = new RelayCommand(ShowMessage, param => this.canExecute);
+            //toggleExecuteCommand = new RelayCommand(ChangeCanExecute
+            GetCatalogs();
+        }
 
-
+        private void GetCatalogs() {
             DataRepository dataRepository = new DataRepository();
             dataRepository = Fill(dataRepository);
             Library library = new Library(dataRepository);
 
+            List <CatalogModel> s = new List<CatalogModel>();
+            foreach (Catalog x in dataRepository.GetAllCatalogs()) {
+                s.Add(new CatalogModel(x.Author, x.Title, x.Books.Count));
+            }
+            this.catalogs = s;
+            Console.Out.WriteLine(Catalogs.Count + " adwdawdwadwadwadwadwad");
 
-            //var catalogsGridView = new GridView();
-            //this.CatalogsListView.View = catalogsGridView;
-            //catalogsGridView.Columns.Add(new GridViewColumn {
-            //    Header = "Author",
-            //    DisplayMemberBinding = new Binding("Author")
-            //});
-            //catalogsGridView.Columns.Add(new GridViewColumn {
-            //    Header = "Title",
-            //    DisplayMemberBinding = new Binding("Title")
-            //});
-            //catalogsGridView.Columns.Add(new GridViewColumn {
-            //    Header = "Books",
-            //    DisplayMemberBinding = new Binding("Books")
-            //});
-
-            //var readersGridView = new GridView();
-            //this.ReadersListView.View = readersGridView;
-            //readersGridView.Columns.Add(new GridViewColumn {
-            //    Header = "Id",
-            //    DisplayMemberBinding = new Binding("Id")
-            //});
-            //readersGridView.Columns.Add(new GridViewColumn {
-            //    Header = "FirstName",
-            //    DisplayMemberBinding = new Binding("FirstName")
-            //});
-            //readersGridView.Columns.Add(new GridViewColumn {
-            //    Header = "LastName",
-            //    DisplayMemberBinding = new Binding("LastName")
-            //});
-            //readersGridView.Columns.Add(new GridViewColumn {
-            //    Header = "Books",
-            //    DisplayMemberBinding = new Binding("Books")
-            //});
-
-
-            //foreach (Reader r in library.GetAllReaders()) {
-            //    this.ReadersListView.Items.Add(new Model.Reader() { Id = r.Id, FirstName = r.FirstName, LastName = r.LastName, Books = r.Books.Count });
-            //}
-
-            //foreach (Catalog c in library.GetAllCatalogs()) {
-
-            //    this.CatalogsListView.Items.Add(new Model.Catalog() { Author = c.Author, Title = c.Title, Books = c.Books.Count });
-            //}
         }
-        #endregion
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName) {
+            if (this.PropertyChanged != null) {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private List<CatalogModel> catalogs;
+        public List<CatalogModel> Catalogs {
+            get {
+                return this.catalogs;
+            }
+            set {
+                this.catalogs = value;
+                this.OnPropertyChanged("Catalogs");
+            }
+        }
+
+        private List<ReaderModel> readers;
+        public List<ReaderModel> Readers {
+            get {
+                return this.readers;
+            }
+            set {
+                this.readers = value;
+                this.OnPropertyChanged("Readers");
+            }
+        }
 
 
 
-        #region ViewModel API
+
+
+
+
+
+
+
+
+
+
+        private string m_ActionText;
         public string ActionText {
             get => m_ActionText;
             set {
                 m_ActionText = value;
             }
         }
+        public string ButtonContent {
+            get {
+                return "Click Me";
+            }
+        }
+
+        //public MainWindowViewModel() {
+        //    m_ActionText = "Text to be displayed on the popup";
 
 
-        private string m_ActionText;
 
-        #endregion
+
+
+     
+
+
+
+
+
+
 
 
         //private void ReturnButtonClick(object sender, RoutedEventArgs e) {
@@ -87,6 +109,7 @@ namespace GUI.ViewModel {
         //private void RentButtonClick(object sender, RoutedEventArgs e) {
 
         //}
+
 
         public DataRepository Fill(DataRepository dataRepository) {
             Catalog c1 = new Catalog("Shakespeare", "Sonnet 116");
@@ -169,5 +192,7 @@ namespace GUI.ViewModel {
 
             return dataRepository;
         }
+    
     }
+
 }
