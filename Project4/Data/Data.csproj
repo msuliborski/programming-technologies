@@ -5,11 +5,20 @@
     <AssemblyName>Data</AssemblyName>
     <RootNamespace>Data</RootNamespace>
     <ApplicationIcon />
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="LibDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LibDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -18,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="LibDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LibDataSet.Designer.cs</LastGenOutput>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
