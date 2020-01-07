@@ -11,6 +11,7 @@
 
 
   <ItemGroup>
+<<<<<<< HEAD
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -24,6 +25,14 @@
 
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
+=======
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Compile Update="LibDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LibDataSet.xsd</DependentUpon>
+    </Compile>
+>>>>>>> 12abc1b4983a9f6a094b9663c49e5f0552dfadaf
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
