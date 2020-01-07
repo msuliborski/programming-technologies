@@ -12,8 +12,6 @@
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="LibDataSet.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -35,6 +33,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="LINQ to SQL\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
 
 </Project>
