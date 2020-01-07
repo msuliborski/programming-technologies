@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace Data {
+namespace Data.LINQ_to_SQL {
     
     
     /// <summary>
