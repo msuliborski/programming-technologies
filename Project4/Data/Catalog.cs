@@ -5,7 +5,7 @@ using System.Text;
 namespace Data {
 
     [Serializable]
-    public class Catalog {
+    public partial class Catalog {
         public string Author { get; set; }
         public string Title { get; set; }
         public List<Book> Books { get; set; }

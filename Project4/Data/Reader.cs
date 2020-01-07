@@ -5,7 +5,7 @@ using System.Text;
 namespace Data {
 
     [Serializable]
-    public class Reader {
+    public partial class Reader {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
