@@ -1,18 +1,16 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Data {
 
-namespace Data {
-
-    [Serializable]
     public partial class Book {
-        public Catalog Catalog;
-        public int IdNumber { get; set; }
-
-        public Book(Catalog catalog, int idNumber) {
-            Catalog = catalog;
+        
+        public Book(int idNumber, int catalogId, int readerId) : this() {
             IdNumber = idNumber;
+            CatalogId = catalogId;
+            ReaderId = readerId;
+        }
+
+        public Book(int catalogId, int readerId) : this() {
+            CatalogId = catalogId;
+            ReaderId = readerId;
         }
     }
 }
