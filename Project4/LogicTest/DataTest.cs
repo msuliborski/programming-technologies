@@ -1,11 +1,27 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Data;
+using System.Data.Linq.Mapping;
+using System.IO;
 using System.Linq;
 
 namespace Tests {
     [TestClass]
+    [DeploymentItem(@"Lib.mdf")]
     public class DataTest {
         private DataRepository dataRepository;
+
+
+        [ClassInitialize]
+        public static void ClassInitializeMethod(TestContext context) {
+            string DBRelativePath = @"Lib.mdf";
+            string testingWorkingFolder = Environment.CurrentDirectory;
+            string DBPath = Path.Combine(testingWorkingFolder, DBRelativePath);
+            FileInfo databaseFile = new FileInfo(DBPath);
+            Assert.IsTrue(databaseFile.Exists, $"{Environment.CurrentDirectory}");
+            connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={_DBPath};Integrated Security = True; Connect Timeout = 30;";
+        }
+
+
 
         [TestInitialize]
         public void Fill() {
