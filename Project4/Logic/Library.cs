@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Data;
+using System.Linq;
 
 
 namespace Logic {
@@ -24,6 +25,34 @@ namespace Logic {
 
         public Book RentBook(string author, string title, Reader reader) {
             return null;
+        }
+
+        public bool UserCanRentBook(string author, string title, int readerId) {
+            Catalog catalog = dataRepository.GetCatalog(author, title);
+            Book book = dataRepository.GetBook(catalog);
+            Reader reader = dataRepository.GetReader(readerId);
+            if (book != null && !reader.Books.Contains(book)) return true; 
+            return false;
+        }
+
+        public bool UserCanReturnBook(string author, string title, int readerId) {
+            Catalog catalog = dataRepository.GetCatalog(author, title);
+            Reader reader = dataRepository.GetReader(readerId);
+            Book book = reader.Books.FirstOrDefault(c => c.Catalog == catalog);
+            if (book != null && reader.Books.Contains(book)) return true; 
+            return false;
+        }
+
+        public void ReturnBook(string author, string title, int readerId) { 
+            Catalog catalog = dataRepository.GetCatalog(author, title);
+            Reader reader = dataRepository.GetReader(readerId);
+            Book book = reader.Books.FirstOrDefault(c => c.Catalog == catalog);
+
+            if (book != null) {
+                book.Catalog.Books.Add(book);
+                reader.Books.Remove(book);
+                dataRepository.AddEvent(new ReturnBook(DateTime.Now, book, reader));
+            }
         }
 
         public void ReturnBook(Book book, Reader reader) {
