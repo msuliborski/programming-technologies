@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Model {
+namespace Services.Model {
     public class Catalog {
         public string Author { get; set; }
         public string Title { get; set; }
-        public List<Book> Books { get; set; }
+        public int Books { get; set; }
 
-        public Catalog(string author, string title) {
+        public Catalog(string author, string title, int books) {
             Author = author;
             Title = title;
-            Books = new List<Book>();
+            Books = books;
         }
     }
 }

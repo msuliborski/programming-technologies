@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using Data;
 using GUI.Model;
-using Logic;
+using Services;
 
 namespace GUI.ViewModel {
     public class MainWindowViewModel : ViewModelBase {

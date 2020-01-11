@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace Logic.Model {
+namespace Services.Model {
     public class Book {
-        public Catalog Catalog;
+        public int CatalogId;
         public int IdNumber { get; set; }
 
-        public Book(Catalog catalog, int idNumber) {
-            Catalog = catalog;
+        public Book(int catalogId, int idNumber) {
+            CatalogId = catalogId;
             IdNumber = idNumber;
         }
     }
