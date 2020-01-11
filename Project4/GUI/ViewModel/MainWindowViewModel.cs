@@ -58,7 +58,7 @@ namespace GUI.ViewModel {
             this.OnPropertyChanged(nameof(Catalogs));
         }
         private bool canRent(Object o) {
-            if (currentCatalog != null && currentReader != null && library.UserCanRentBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id)) return true;
+            if (currentCatalog != null && currentReader != null && library.UserCanRentBook(currentCatalog.Author, currentCatalog.Title)) return true;
             return false;
         }
         

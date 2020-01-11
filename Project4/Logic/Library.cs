@@ -76,16 +76,41 @@ namespace Services {
             }
         }
 
-        public Book RentBook(string author, string title, int readerId) {
-            return null;
+        public void RentBook(string author, string title, int readerId) {
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+
+                Catalog catalogEntity = (from _catalog in lib.Catalogs
+                                         where _catalog.Author == author && _catalog.Title == title
+                                         select _catalog).SingleOrDefault();
+                Reader readerEntity = (from _reader in lib.Readers
+                                       where _reader.Id == readerId
+                                       select _reader).SingleOrDefault();
+
+                if (catalogEntity != null && readerEntity != null) {
+                    Book bookEntity = catalogEntity.Books.FirstOrDefault(b => b.Catalog == catalogEntity);
+                    if (bookEntity != null) {
+                        bookEntity.ReaderId = readerEntity.Id;
+                        lib.SubmitChanges();
+                    }
+                }
+            }
         }
 
         #endregion
 
 
         #region Reader
-        public IEnumerable<Reader> GetAllReaders() {
-            return null;
+        public IEnumerable<Model.Reader> GetAllReaders() {
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+
+                List<Reader> readerEntities = new List<Reader>();
+                List<Model.Reader> readerModels = new List<Model.Reader>();
+
+                foreach (Reader readerEntity in readerEntities) {
+                    readerModels.Add(new Model.Reader(readerEntity.Id, readerEntity.FirstName, readerEntity.LastName, readerEntity.Books.Count));
+                }
+                return readerModels;
+            }
         }
         #endregion
 
