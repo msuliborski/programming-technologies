@@ -11,30 +11,73 @@ using Logic;
 namespace GUI.ViewModel {
     public class MainWindowViewModel : ViewModelBase {
 
+        private DataRepository dataRepository;
+        private Library library;
+
         public MainWindowViewModel() {
-            //HiButtonCommand = new RelayCommand(ShowMessage, param => this.canExecute);
-            //toggleExecuteCommand = new RelayCommand(ChangeCanExecute
+            dataRepository = new DataRepository();
+            dataRepository = Fill(dataRepository);
+            library = new Library(dataRepository);
+
             GetCatalogs();
-            rentCommand = new RelayCommand(o => rentMethod(o), o => { return true; });
+            GetReaders();
+            rentCommand = new RelayCommand(o => rentMethod(o), o => canRent(o));
+            returnCommand = new RelayCommand(o => returnMethod(o), o => canReturn(o));
         }
 
         private void GetCatalogs() {
-            DataRepository dataRepository = new DataRepository();
-            dataRepository = Fill(dataRepository);
-            Library library = new Library(dataRepository);
-
             List <CatalogModel> s = new List<CatalogModel>();
             foreach (Catalog x in dataRepository.GetAllCatalogs()) {
                 s.Add(new CatalogModel(x.Author, x.Title, x.Books.Count));
             }
             this.catalogs = s;
-            Console.Out.WriteLine(Catalogs.Count + " adwdawdwadwadwadwadwad");
+
+        }
+        private void GetReaders() {
+            List <ReaderModel> s = new List<ReaderModel>();
+            foreach (Reader x in dataRepository.GetAllReaders()) {
+                s.Add(new ReaderModel(x.Id, x.FirstName, x.LastName, x.Books.Count));
+            }
+            this.readers = s;
 
         }
 
+
         public ICommand rentCommand { get; set; }
         private void rentMethod(Object o) {
-            MessageBox.Show("test");
+            library.RentBook(currentCatalog.Author, currentCatalog.Title, library.GetReader(currentReader.Id));
+            GetCatalogs();
+            GetReaders();
+            this.OnPropertyChanged(nameof(Readers));
+            this.OnPropertyChanged(nameof(Catalogs));
+        }
+        private bool canRent(Object o) {
+            if (currentCatalog != null && currentReader != null && library.UserCanRentBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id)) return true;
+            return false;
+        }
+        
+        public ICommand returnCommand { get; set; }
+        private void returnMethod(Object o) {
+            library.ReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
+            GetCatalogs();
+            GetReaders();
+            this.OnPropertyChanged(nameof(Readers));
+            this.OnPropertyChanged(nameof(Catalogs));
+        }
+        private bool canReturn(Object o) {
+            if (currentCatalog != null && currentReader != null && library.UserCanReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id)) return true;
+            return false;
+        }
+
+        private List<CatalogModel> catalogs;
+        public List<CatalogModel> Catalogs {
+            get {
+                return this.catalogs;
+            }
+            set {
+                this.catalogs = value;
+                this.OnPropertyChanged(nameof(Catalogs));
+            }
         }
 
         private CatalogModel currentCatalog;
@@ -47,16 +90,6 @@ namespace GUI.ViewModel {
                 this.OnPropertyChanged(nameof(CurrentCatalog));
             }
         }
-        private List<CatalogModel> catalogs;
-        public List<CatalogModel> Catalogs {
-            get {
-                return this.catalogs;
-            }
-            set {
-                this.catalogs = value;
-                this.OnPropertyChanged("Catalogs");
-            }
-        }
 
 
         private List<ReaderModel> readers;
@@ -66,58 +99,20 @@ namespace GUI.ViewModel {
             }
             set {
                 this.readers = value;
-                this.OnPropertyChanged("Readers");
+                this.OnPropertyChanged(nameof(Readers));
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        private string m_ActionText;
-        public string ActionText {
-            get => m_ActionText;
-            set {
-                m_ActionText = value;
-            }
-        }
-        public string ButtonContent {
+        private ReaderModel currentReader;
+        public ReaderModel CurrentReader {
             get {
-                return "Click Me";
+                return this.currentReader;
+            }
+            set {
+                this.currentReader = value;
+                this.OnPropertyChanged(nameof(CurrentReader));
             }
         }
-
-        //public MainWindowViewModel() {
-        //    m_ActionText = "Text to be displayed on the popup";
-
-
-
-
-
-     
-
-
-
-
-
-
-
-
-        //private void ReturnButtonClick(object sender, RoutedEventArgs e) {
-
-        //}
-
-        //private void RentButtonClick(object sender, RoutedEventArgs e) {
-
-        //}
 
 
         public DataRepository Fill(DataRepository dataRepository) {
@@ -201,7 +196,5 @@ namespace GUI.ViewModel {
 
             return dataRepository;
         }
-    
     }
-
 }

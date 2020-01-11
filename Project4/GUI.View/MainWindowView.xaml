@@ -10,11 +10,9 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
+    
     <Grid>
-
-
-        <!--gin="11,10,10,209" ItemsSource="{Binding Catalogs}" SelectedItem="{Binding CurrentCatalog, Mode=TwoWay}"/> -->
-        <ListBox x:Name="CatalogsListView" HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="772"
+        <ListBox x:Name="CatalogsListBox" HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="772"
                   ItemsSource="{Binding Path=Catalogs}" SelectedItem="{Binding CurrentCatalog, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -31,38 +29,29 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <!--<ListBox x:Name="ReadersListView" HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="772"
-                  ItemsSource="{Binding Path=Catalogs}" SelectedItem="{Binding CurrentCatalog, Mode=TwoWay}">
+
+        <ListBox x:Name="ReadersListBox" HorizontalAlignment="Left" Height="100" Margin="10,215,0,0" VerticalAlignment="Top" Width="772"
+                  ItemsSource="{Binding Path=Readers}" SelectedItem="{Binding CurrentReader, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Author}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Title}"/>
-                        <TextBlock Grid.Column="2" Text="{Binding Books}"/>
+                        <TextBlock Grid.Column="0" Text="{Binding Id}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding FirstName}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding LastName}"/>
+                        <TextBlock Grid.Column="3" Text="{Binding Books}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>-->
-        <ListView x:Name="ReadersListView" HorizontalAlignment="Left" Height="100" Margin="10,215,0,0" VerticalAlignment="Top" Width="772"
-                  ItemsSource="{Binding Path=Readers}" SelectedItem="{Binding CurrentReader, Mode=TwoWay}" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Id" Width="100"/>
-                    <GridViewColumn Header="First Name" Width="200"/>
-                    <GridViewColumn Header="Last Name" Width="372"/>
-                    <GridViewColumn Header="Books" Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        </ListBox>
+        
         <Button x:Name="RentButton" Content="Rent" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="75" Command="{Binding rentCommand}"/>
-        <Button x:Name="ReturnButton" Content="Return" HorizontalAlignment="Left" Margin="90,320,0,0" VerticalAlignment="Top" Width="75" />
-        <TextBlock HorizontalAlignment="Left" Margin="170,320,0,0" TextWrapping="Wrap" Text="{Binding ActionText}" VerticalAlignment="Top" Height="89" Width="612"/>
-        <Button Content="{Binding HiButtonContent}" Command="{Binding HiButtonCommand}" CommandParameter="Hai" Margin="11,345,627,44"/>
-        <Button Content="Toggle Can Click" Command="{Binding ToggleExecuteCommand}" Margin="11,380,627,10"/>
+        <Button x:Name="ReturnButton" Content="Return" HorizontalAlignment="Left" Margin="90,320,0,0" VerticalAlignment="Top" Width="75" Command="{Binding returnCommand}"/>
     </Grid>
+    
 </Window>
