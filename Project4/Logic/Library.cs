@@ -36,20 +36,39 @@ namespace Services {
             return null;
         }
 
+
+        
+
         public bool UserCanRentBook(string author, string title, int readerId) {
-            Catalog catalog = dataRepository.GetCatalog(author, title);
-            Book book = dataRepository.GetBook(catalog);
-            Reader reader = dataRepository.GetReader(readerId);
-            if (book != null && !reader.Books.Contains(book)) return true; 
-            return false;
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                Catalog catalogEntity = (from _catalog in lib.Catalogs
+                                         where _catalog.Author == author && _catalog.Title == title
+                                         select _catalog).SingleOrDefault();
+                if (catalogEntity != null) {
+                    Book bookEntity = catalogEntity.Books.FirstOrDefault();
+                    Reader readerEntity = (from _reader in lib.Readers
+                                           where _reader.Id == readerId
+                                           select _reader).SingleOrDefault();
+                    if (bookEntity != null) return true;
+                }
+                return false;
+            }
         }
 
         public bool UserCanReturnBook(string author, string title, int readerId) {
-            Catalog catalog = dataRepository.GetCatalog(author, title);
-            Reader reader = dataRepository.GetReader(readerId);
-            Book book = reader.Books.FirstOrDefault(c => c.Catalog == catalog);
-            if (book != null && reader.Books.Contains(book)) return true; 
-            return false;
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                Catalog catalogEntity = (from _catalog in lib.Catalogs
+                                         where _catalog.Author == author && _catalog.Title == title
+                                         select _catalog).SingleOrDefault();
+                Reader readerEntity = (from _reader in lib.Readers
+                                       where _reader.Id == readerId
+                                       select _reader).SingleOrDefault();
+                if (catalogEntity != null && readerEntity != null) {
+                    Book bookEntity = readerEntity.Books.FirstOrDefault(b => b.Catalog == catalogEntity);
+                    if (bookEntity != null) return true;
+                }
+                return false;
+            }
         }
 
         public void ReturnBook(string author, string title, int readerId) { 
@@ -108,8 +127,27 @@ namespace Services {
 
 
         #region Catalog
-        public Catalog GetCatalog(string author, string title) {
-            return null;
+        public Model.Catalog GetCatalog(string author, string title) {
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                Catalog catalogEntity = (from _catalog in lib.Catalogs
+                                         where _catalog.Author == author && _catalog.Title == title
+                                         select _catalog).SingleOrDefault();
+                return new Model.Catalog(catalogEntity.Author, catalogEntity.Title, catalogEntity.Books.Count);
+            }
+        }
+
+
+        public IEnumerable<Model.Catalog> GetReadersCatalogs(int readerId) {
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                IEnumerable<Catalog> catalogEntities = (from _book in lib.Books
+                                       where _book.ReaderId == readerId
+                                       select _book.Catalog).Distinct();
+                List<Model.Catalog> catalogModels = new List<Model.Catalog>();
+                foreach (Catalog catalogEntity in catalogEntities) {
+                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, catalogEntity.Books.Count));
+                }
+                return catalogModels;
+            }
         }
 
         public void AddCatalog(Catalog catalog) {
