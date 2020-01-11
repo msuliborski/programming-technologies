@@ -17,7 +17,6 @@ namespace GUI.ViewModel {
 
             GetCatalogs();
             GetReaders();
-            GetReadersCatalogs();
             rentCommand = new RelayCommand(o => rentMethod(o), o => canRent(o));
             returnCommand = new RelayCommand(o => returnMethod(o), o => canReturn(o));
         }
@@ -37,6 +36,7 @@ namespace GUI.ViewModel {
             this.readers = s;
         }
         private void GetReadersCatalogs() {
+            if (currentReader == null) return;
             List<CatalogModel> s = new List<CatalogModel>();
             foreach (Services.Model.Catalog x in library.GetReadersCatalogs(currentReader.Id)) {
                 s.Add(new CatalogModel(x.Author, x.Title, x.Books));
