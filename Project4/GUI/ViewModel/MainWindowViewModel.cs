@@ -51,7 +51,7 @@ namespace GUI.ViewModel {
 
         public ICommand rentCommand { get; set; }
         private void rentMethod(Object o) {
-            library.RentBook(currentCatalog.Author, currentCatalog.Title, library.GetReader(currentReader.Id));
+            library.RentBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
             GetCatalogs();
             GetReaders();
             this.OnPropertyChanged(nameof(Readers));
