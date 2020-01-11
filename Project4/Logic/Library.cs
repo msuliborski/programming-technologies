@@ -4,7 +4,7 @@ using Data;
 using System.Linq;
 
 
-namespace Logic {
+namespace Services {
     public class Library {
         //private DataRepository dataRepository;
 
@@ -19,10 +19,19 @@ namespace Logic {
         }
 
         #region Book
-        public Book GetBook(string author, string title) {
-            return null;
+        public Model.Book GetBook(string author, string title) {
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                Catalog catalogEntity = (from _catalog in lib.Catalogs
+                                   where _catalog.Author == author && _catalog.Title == title
+                                   select _catalog).SingleOrDefault();
+                if (catalogEntity != null) {
+                    Book bookEntity = catalogEntity.Books.FirstOrDefault();
+                    return bookEntity != null ? new Model.Book(bookEntity.CatalogId, bookEntity.IdNumber) : null;
+                } else {
+                    return null;
+                }
+            }
         }
-
         public Book RentBook(string author, string title, Reader reader) {
             return null;
         }
@@ -59,13 +68,7 @@ namespace Logic {
             
         }
 
-        public void DeleteBook(Book book) {
-            
-        }
-
-        public void AddBook(Book book) {
-           
-        }
+      
 
         public void AddBook(string author, string title) {
          
@@ -129,22 +132,21 @@ namespace Logic {
             
         }
 
-        public IEnumerable<Catalog> GetAllCatalogs() {
+        public IEnumerable<Model.Catalog> GetAllCatalogs() {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
 
-                List<Catalog> bookEntities = new List<Book>(); 
-                List<Model.Book> bookModels = new List<Model.Book>();
+                List<Catalog> catalogEntities = new List<Catalog>(); 
+                List<Model.Catalog> catalogModels = new List<Model.Catalog>();
 
-                foreach (Book bookEntity in bookEntities) { 
-                    bookModels.Add(new Model.Book(bookEntity.))
+                foreach (Catalog catalogEntity in catalogEntities) {
+                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, catalogEntity.Books.Count));
                 }
+                return catalogModels;
             }
-            return null;
-            
         }
         #endregion
 
-
+       
       
     }
 }
