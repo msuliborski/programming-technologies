@@ -9,12 +9,13 @@ using GUI.Model;
 using Logic;
 
 namespace GUI.ViewModel {
-    public class MainWindowViewModel : INotifyPropertyChanged {
+    public class MainWindowViewModel : ViewModelBase {
 
         public MainWindowViewModel() {
             //HiButtonCommand = new RelayCommand(ShowMessage, param => this.canExecute);
             //toggleExecuteCommand = new RelayCommand(ChangeCanExecute
             GetCatalogs();
+            rentCommand = new RelayCommand(o => rentMethod(o), o => { return true; });
         }
 
         private void GetCatalogs() {
@@ -31,14 +32,21 @@ namespace GUI.ViewModel {
 
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName) {
-            if (this.PropertyChanged != null) {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+        public ICommand rentCommand { get; set; }
+        private void rentMethod(Object o) {
+            MessageBox.Show("test");
         }
 
+        private CatalogModel currentCatalog;
+        public CatalogModel CurrentCatalog {
+            get {
+                return this.currentCatalog;
+            }
+            set {
+                this.currentCatalog = value;
+                this.OnPropertyChanged(nameof(CurrentCatalog));
+            }
+        }
         private List<CatalogModel> catalogs;
         public List<CatalogModel> Catalogs {
             get {
@@ -49,6 +57,7 @@ namespace GUI.ViewModel {
                 this.OnPropertyChanged("Catalogs");
             }
         }
+
 
         private List<ReaderModel> readers;
         public List<ReaderModel> Readers {
