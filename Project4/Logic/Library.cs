@@ -32,17 +32,14 @@ namespace Services {
             }
         }
         
-        public bool UserCanRentBook(string author, string title, int readerId) {
+        public bool UserCanRentBook(string author, string title) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
                 Catalog catalogEntity = (from _catalog in lib.Catalogs
                                          where _catalog.Author == author && _catalog.Title == title
                                          select _catalog).SingleOrDefault();
                 if (catalogEntity != null) {
                     Book bookEntity = catalogEntity.Books.FirstOrDefault();
-                    Reader readerEntity = (from _reader in lib.Readers
-                                           where _reader.Id == readerId
-                                           select _reader).SingleOrDefault();
-                    if (bookEntity != null) return true;
+                  if (bookEntity != null) return true;
                 }
                 return false;
             }
@@ -64,15 +61,23 @@ namespace Services {
             }
         }
 
-        public void ReturnBook(string author, string title, int readerId) { 
-            Catalog catalog = dataRepository.GetCatalog(author, title);
-            Reader reader = dataRepository.GetReader(readerId);
-            Book book = reader.Books.FirstOrDefault(c => c.Catalog == catalog);
+        public void ReturnBook(string author, string title, int readerId) {
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
 
-            if (book != null) {
-                book.Catalog.Books.Add(book);
-                reader.Books.Remove(book);
-                dataRepository.AddEvent(new ReturnBook(DateTime.Now, book, reader));
+                Catalog catalogEntity = (from _catalog in lib.Catalogs
+                                         where _catalog.Author == author && _catalog.Title == title
+                                         select _catalog).SingleOrDefault();
+                Reader readerEntity = (from _reader in lib.Readers
+                                       where _reader.Id == readerId
+                                       select _reader).SingleOrDefault();
+
+                if (catalogEntity != null && readerEntity != null) { 
+                    Book bookEntity = readerEntity.Books.FirstOrDefault(b => b.Catalog == catalogEntity);
+                    if (bookEntity != null) {
+                        bookEntity.ReaderId = -1;
+                        lib.SubmitChanges();
+                    }
+                }
             }
         }
 
@@ -108,9 +113,9 @@ namespace Services {
 
                 List<Catalog> catalogEntities = new List<Catalog>(); 
                 List<Model.Catalog> catalogModels = new List<Model.Catalog>();
-
                 foreach (Catalog catalogEntity in catalogEntities) {
-                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, catalogEntity.Books.Count));
+                    List<Book> bookEntities = catalogEntity.Books.Where(b => b.ReaderId != -1).ToList();
+                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, bookEntities.Count));
                 }
                 return catalogModels;
             }
