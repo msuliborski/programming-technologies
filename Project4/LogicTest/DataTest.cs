@@ -17,8 +17,8 @@ namespace Tests {
             string DBRelativePath = @"Lib.mdf";
             string testingWorkingFolder = Environment.CurrentDirectory;
             string DBPath = Path.Combine(testingWorkingFolder, DBRelativePath);
-            FileInfo _databaseFile = new FileInfo(DBPath);
-            Assert.IsTrue(_databaseFile.Exists, $"{Environment.CurrentDirectory}");
+            FileInfo databaseFile = new FileInfo(DBPath);
+            Assert.IsTrue(databaseFile.Exists, $"{Environment.CurrentDirectory}");
             connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={DBPath};Integrated Security = True; Connect Timeout = 30;";
         }
 
@@ -31,7 +31,6 @@ namespace Tests {
                 //IEnumerable filtered = lib.FilterReadersByLastName_ForEach("Reader");           
             }
         }
-      
 
        
     }
