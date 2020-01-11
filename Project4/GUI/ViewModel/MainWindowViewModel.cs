@@ -21,17 +21,17 @@ namespace GUI.ViewModel {
 
             GetCatalogs();
             GetReaders();
+            GetReadersCatalogs();
             rentCommand = new RelayCommand(o => rentMethod(o), o => canRent(o));
             returnCommand = new RelayCommand(o => returnMethod(o), o => canReturn(o));
         }
 
         private void GetCatalogs() {
-            List <CatalogModel> s = new List<CatalogModel>();
+            List<CatalogModel> s = new List<CatalogModel>();
             foreach (Catalog x in dataRepository.GetAllCatalogs()) {
                 s.Add(new CatalogModel(x.Author, x.Title, x.Books.Count));
             }
             this.catalogs = s;
-
         }
         private void GetReaders() {
             List <ReaderModel> s = new List<ReaderModel>();
@@ -39,7 +39,13 @@ namespace GUI.ViewModel {
                 s.Add(new ReaderModel(x.Id, x.FirstName, x.LastName, x.Books.Count));
             }
             this.readers = s;
-
+        }
+        private void GetReadersCatalogs() {
+            List<CatalogModel> s = new List<CatalogModel>();
+            foreach (Catalog x in dataRepository.GetReadersCatalogs(currentReader.Id)) {
+                s.Add(new CatalogModel(x.Author, x.Title, x.Books.Count));
+            }
+            this.readersCatalogs = s;
         }
 
 
@@ -77,6 +83,17 @@ namespace GUI.ViewModel {
             set {
                 this.catalogs = value;
                 this.OnPropertyChanged(nameof(Catalogs));
+            }
+        }
+
+        private List<CatalogModel> readersCatalogs;
+        public List<CatalogModel> ReadersCatalogs {
+            get {
+                return this.readersCatalogs;
+            }
+            set {
+                this.readersCatalogs = value;
+                this.OnPropertyChanged(nameof(ReadersCatalogs));
             }
         }
 

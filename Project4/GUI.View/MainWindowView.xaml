@@ -10,27 +10,11 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
-    
-    <Grid>
-        <ListBox x:Name="CatalogsListBox" HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="772"
-                  ItemsSource="{Binding Path=Catalogs}" SelectedItem="{Binding CurrentCatalog, Mode=TwoWay}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="280"/>
-                            <ColumnDefinition Width="120"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Author}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Title}"/>
-                        <TextBlock Grid.Column="2" Text="{Binding Books}"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
 
-        <ListBox x:Name="ReadersListBox" HorizontalAlignment="Left" Height="100" Margin="10,215,0,0" VerticalAlignment="Top" Width="772"
+    <Grid>
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Readers" VerticalAlignment="Top"/>
+        <ListBox x:Name="ReadersListBox" HorizontalAlignment="Left" Height="111" Margin="10,31,0,0" VerticalAlignment="Top" Width="772"
                   ItemsSource="{Binding Path=Readers}" SelectedItem="{Binding CurrentReader, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -49,9 +33,49 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
-        <Button x:Name="RentButton" Content="Rent" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" Width="75" Command="{Binding rentCommand}"/>
-        <Button x:Name="ReturnButton" Content="Return" HorizontalAlignment="Left" Margin="90,320,0,0" VerticalAlignment="Top" Width="75" Command="{Binding returnCommand}"/>
+
+
+        <TextBlock HorizontalAlignment="Left" Margin="10,147,0,0" TextWrapping="Wrap" Text="All books" VerticalAlignment="Top"/>
+        <ListBox x:Name="CatalogsListBox" HorizontalAlignment="Left" Height="216" Margin="10,168,0,0" VerticalAlignment="Top" Width="380"
+                  ItemsSource="{Binding Path=Catalogs}" SelectedItem="{Binding CurrentCatalog, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Author}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Title}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Books}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock HorizontalAlignment="Left" Margin="395,147,0,0" TextWrapping="Wrap" Text="Reader's books" VerticalAlignment="Top"/>
+        <ListBox x:Name="ReadersCatalogsListBox" HorizontalAlignment="Left" Height="216" Margin="395,168,0,0" VerticalAlignment="Top" Width="387"
+            ItemsSource="{Binding ReadersCatalogs}" SelectedItem="{Binding CurrentCatalog, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Author}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Title}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Books}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button x:Name="RentButton" Content="Rent" HorizontalAlignment="Left" Margin="10,389,0,0" VerticalAlignment="Top" Width="75" Command="{Binding rentCommand}"/>
+        <Button x:Name="ReturnButton" Content="Return" HorizontalAlignment="Left" Margin="90,389,0,0" VerticalAlignment="Top" Width="75" Command="{Binding returnCommand}"/>
+
     </Grid>
-    
+
 </Window>
