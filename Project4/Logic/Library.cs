@@ -6,8 +6,7 @@ using System.Linq;
 
 namespace Services {
     public class Library {
-        //private DataRepository dataRepository;
-
+        
         private string ConnectionString { get; }
 
         public Library() { 
@@ -32,13 +31,7 @@ namespace Services {
                 }
             }
         }
-        public Book RentBook(string author, string title, Reader reader) {
-            return null;
-        }
-
-
         
-
         public bool UserCanRentBook(string author, string title, int readerId) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
                 Catalog catalogEntity = (from _catalog in lib.Catalogs
@@ -83,60 +76,20 @@ namespace Services {
             }
         }
 
-        public void ReturnBook(Book book, Reader reader) {
-            
+        public Book RentBook(string author, string title, int readerId) {
+            return null;
         }
 
-      
-
-        public void AddBook(string author, string title) {
-         
-        }
         #endregion
 
 
         #region Reader
-        public Reader GetReader(int id) {
-            return null;
-        }
-
-        public void AddReader(Reader reader) {
-           
-        }
-
-        public void AddReader(int id, string fistName, string lastName) {
-            
-        }
-
-        public void DeleteReader(Reader reader) {
-            
-        }
-
-        public void DeleteReader(int id) {
-            
-        }
-
-        public void UpdateReader(int id, Reader reader) {
-            
-        }
-
         public IEnumerable<Reader> GetAllReaders() {
             return null;
         }
         #endregion
 
-
         #region Catalog
-        public Model.Catalog GetCatalog(string author, string title) {
-            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
-                Catalog catalogEntity = (from _catalog in lib.Catalogs
-                                         where _catalog.Author == author && _catalog.Title == title
-                                         select _catalog).SingleOrDefault();
-                return new Model.Catalog(catalogEntity.Author, catalogEntity.Title, catalogEntity.Books.Count);
-            }
-        }
-
-
         public IEnumerable<Model.Catalog> GetReadersCatalogs(int readerId) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
                 IEnumerable<Catalog> catalogEntities = (from _book in lib.Books
@@ -148,26 +101,6 @@ namespace Services {
                 }
                 return catalogModels;
             }
-        }
-
-        public void AddCatalog(Catalog catalog) {
-            
-        }
-
-        public void AddCatalog(string author, string title) {
-            
-        }
-
-        public void UpdateCatalog(int index, Catalog catalog) {
-            
-        }
-
-        public void DeleteCatalog(int index) {
-            
-        }
-
-        public void DeleteCatalog(string author, string title) {
-            
         }
 
         public IEnumerable<Model.Catalog> GetAllCatalogs() {
