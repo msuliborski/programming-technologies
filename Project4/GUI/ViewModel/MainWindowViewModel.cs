@@ -27,6 +27,7 @@ namespace GUI.ViewModel {
                 s.Add(new CatalogModel(x.Author, x.Title, x.Books));
             }
             this.catalogs = s;
+            this.OnPropertyChanged(nameof(Catalogs));
         }
         private void GetReaders() {
             List <ReaderModel> s = new List<ReaderModel>();
@@ -34,24 +35,26 @@ namespace GUI.ViewModel {
                 s.Add(new ReaderModel(x.Id, x.FirstName, x.LastName, x.Books));
             }
             this.readers = s;
+            this.OnPropertyChanged(nameof(Readers));
         }
         private void GetReadersCatalogs() {
-            if (currentReader == null) return;
-            List<CatalogModel> s = new List<CatalogModel>();
-            foreach (Services.Model.Catalog x in library.GetReadersCatalogs(currentReader.Id)) {
-                s.Add(new CatalogModel(x.Author, x.Title, x.Books));
+            if (currentReader != null) {
+                List<CatalogModel> s = new List<CatalogModel>();
+                foreach (Services.Model.Catalog x in library.GetReadersCatalogs(currentReader.Id)) {
+                    s.Add(new CatalogModel(x.Author, x.Title, x.Books));
+                }
+                this.readersCatalogs = s;
             }
-            this.readersCatalogs = s;
+            this.OnPropertyChanged(nameof(ReadersCatalogs));
         }
 
 
         public ICommand rentCommand { get; set; }
         private void rentMethod(Object o) {
             library.RentBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
+            GetReadersCatalogs();
             GetCatalogs();
             GetReaders();
-            this.OnPropertyChanged(nameof(Readers));
-            this.OnPropertyChanged(nameof(Catalogs));
         }
         private bool canRent(Object o) {
             if (currentCatalog != null && currentReader != null && library.UserCanRentBook(currentCatalog.Author, currentCatalog.Title)) return true;
@@ -61,10 +64,9 @@ namespace GUI.ViewModel {
         public ICommand returnCommand { get; set; }
         private void returnMethod(Object o) {
             library.ReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
+            GetReadersCatalogs();
             GetCatalogs();
             GetReaders();
-            this.OnPropertyChanged(nameof(Readers));
-            this.OnPropertyChanged(nameof(Catalogs));
         }
         private bool canReturn(Object o) {
             if (currentCatalog != null && currentReader != null && library.UserCanReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id)) return true;
@@ -112,7 +114,6 @@ namespace GUI.ViewModel {
             }
             set {
                 this.readers = value;
-                GetReadersCatalogs();
                 this.OnPropertyChanged(nameof(Readers));
             }
         }
@@ -124,6 +125,7 @@ namespace GUI.ViewModel {
             }
             set {
                 this.currentReader = value;
+                GetReadersCatalogs();
                 this.OnPropertyChanged(nameof(CurrentReader));
             }
         }

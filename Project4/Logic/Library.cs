@@ -12,15 +12,8 @@ namespace Services {
         public Library() {
             
             string workingFolder = Environment.CurrentDirectory + "\\..\\..\\..\\LogicTest\\Lib.mdf";
-           
-            string DBPath = Path.GetFullPath(workingFolder);//.Combine(workingFolder, DBRelativePath);
-            FileInfo databaseFile = new FileInfo(DBPath);
+            string DBPath = Path.GetFullPath(workingFolder);
             ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={DBPath};Integrated Security=True;Connect Timeout=30;";
-            //ConnectionString = $@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = {k}; Integrated Security = True; Connect Timeout = 30";
-            System.Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            System.Console.WriteLine(workingFolder);
-            System.Console.WriteLine(DBPath);
-            System.Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
 
         public Library(string connectionString) {
@@ -48,7 +41,7 @@ namespace Services {
                                          where _catalog.Author == author && _catalog.Title == title
                                          select _catalog).SingleOrDefault();
                 if (catalogEntity != null) {
-                    Book bookEntity = catalogEntity.Books.FirstOrDefault();
+                    Book bookEntity = catalogEntity.Books.Where(b => b.ReaderId == null).FirstOrDefault();
                   if (bookEntity != null) return true;
                 }
                 return false;
@@ -85,7 +78,6 @@ namespace Services {
                     Book bookEntity = readerEntity.Books.FirstOrDefault(b => b.CatalogId == catalogEntity.Id);
                     if (bookEntity != null) {
                         bookEntity.Reader = null;
-                        //readerEntity.Books.Remove(bookEntity);
                         lib.SubmitChanges();
                     }
                 }
@@ -103,7 +95,7 @@ namespace Services {
                                        select _reader).SingleOrDefault();
 
                 if (catalogEntity != null && readerEntity != null) {
-                    Book bookEntity = catalogEntity.Books.FirstOrDefault(b => b.Catalog == catalogEntity);
+                    Book bookEntity = catalogEntity.Books.Where(b => b.ReaderId == null && b.CatalogId == catalogEntity.Id).FirstOrDefault();
                     if (bookEntity != null) {
                         bookEntity.ReaderId = readerEntity.Id;
                         lib.SubmitChanges();
@@ -135,9 +127,12 @@ namespace Services {
                 IEnumerable<Catalog> catalogEntities = (from _book in lib.Books
                                        where _book.ReaderId == readerId
                                        select _book.Catalog).Distinct();
+                Reader readerEntity = (from _reader in lib.Readers
+                                       where _reader.Id == readerId
+                                       select _reader).SingleOrDefault();
                 List<Model.Catalog> catalogModels = new List<Model.Catalog>();
                 foreach (Catalog catalogEntity in catalogEntities) {
-                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, catalogEntity.Books.Count));
+                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, readerEntity.Books.Count));
                 }
                 return catalogModels;
             }
