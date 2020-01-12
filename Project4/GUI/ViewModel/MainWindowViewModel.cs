@@ -112,6 +112,7 @@ namespace GUI.ViewModel {
             }
             set {
                 this.readers = value;
+                GetReadersCatalogs();
                 this.OnPropertyChanged(nameof(Readers));
             }
         }
