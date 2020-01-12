@@ -2,15 +2,25 @@
 using System.Collections.Generic;
 using Data;
 using System.Linq;
-
+using System.IO;
 
 namespace Services {
     public class Library {
         
         private string ConnectionString { get; }
 
-        public Library() { 
-            ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=[TestsDirectory]\Lib.mdf;Integrated Security=True;Connect Timeout=30;";
+        public Library() {
+            
+            string workingFolder = Environment.CurrentDirectory + "\\..\\..\\..\\LogicTest\\Lib.mdf";
+           
+            string DBPath = Path.GetFullPath(workingFolder);//.Combine(workingFolder, DBRelativePath);
+            FileInfo databaseFile = new FileInfo(DBPath);
+            ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={DBPath};Integrated Security=True;Connect Timeout=30;";
+            //ConnectionString = $@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = {k}; Integrated Security = True; Connect Timeout = 30";
+            System.Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            System.Console.WriteLine(workingFolder);
+            System.Console.WriteLine(DBPath);
+            System.Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
 
         public Library(string connectionString) {
@@ -72,9 +82,10 @@ namespace Services {
                                        select _reader).SingleOrDefault();
 
                 if (catalogEntity != null && readerEntity != null) { 
-                    Book bookEntity = readerEntity.Books.FirstOrDefault(b => b.Catalog == catalogEntity);
+                    Book bookEntity = readerEntity.Books.FirstOrDefault(b => b.CatalogId == catalogEntity.Id);
                     if (bookEntity != null) {
-                        bookEntity.ReaderId = -1;
+                        bookEntity.Reader = null;
+                        //readerEntity.Books.Remove(bookEntity);
                         lib.SubmitChanges();
                     }
                 }
@@ -107,10 +118,9 @@ namespace Services {
         #region Reader
         public IEnumerable<Model.Reader> GetAllReaders() {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
-
-                List<Reader> readerEntities = new List<Reader>();
+                List<Reader> readerEntities = lib.Readers.ToList();
                 List<Model.Reader> readerModels = new List<Model.Reader>();
-
+                
                 foreach (Reader readerEntity in readerEntities) {
                     readerModels.Add(new Model.Reader(readerEntity.Id, readerEntity.FirstName, readerEntity.LastName, readerEntity.Books.Count));
                 }
@@ -136,10 +146,10 @@ namespace Services {
         public IEnumerable<Model.Catalog> GetAllCatalogs() {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
 
-                List<Catalog> catalogEntities = new List<Catalog>(); 
+                List<Catalog> catalogEntities = lib.Catalogs.ToList(); 
                 List<Model.Catalog> catalogModels = new List<Model.Catalog>();
                 foreach (Catalog catalogEntity in catalogEntities) {
-                    List<Book> bookEntities = catalogEntity.Books.Where(b => b.ReaderId != -1).ToList();
+                    List<Book> bookEntities = catalogEntity.Books.Where(b => b.ReaderId == null).ToList();
                     catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, bookEntities.Count));
                 }
                 return catalogModels;

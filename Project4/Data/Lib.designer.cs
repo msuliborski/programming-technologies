@@ -36,9 +36,6 @@ namespace Data
     partial void InsertCatalog(Catalog instance);
     partial void UpdateCatalog(Catalog instance);
     partial void DeleteCatalog(Catalog instance);
-    partial void InsertEvent(Event instance);
-    partial void UpdateEvent(Event instance);
-    partial void DeleteEvent(Event instance);
     partial void InsertReader(Reader instance);
     partial void UpdateReader(Reader instance);
     partial void DeleteReader(Reader instance);
@@ -90,14 +87,6 @@ namespace Data
 			}
 		}
 		
-		public System.Data.Linq.Table<Event> Events
-		{
-			get
-			{
-				return this.GetTable<Event>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Reader> Readers
 		{
 			get
@@ -115,9 +104,9 @@ namespace Data
 		
 		private int _IdNumber;
 		
-		private int _CatalogId;
+		private System.Nullable<int> _CatalogId;
 		
-		private int _ReaderId;
+		private System.Nullable<int> _ReaderId;
 		
 		private EntityRef<Catalog> _Catalog;
 		
@@ -129,9 +118,9 @@ namespace Data
     partial void OnCreated();
     partial void OnIdNumberChanging(int value);
     partial void OnIdNumberChanged();
-    partial void OnCatalogIdChanging(int value);
+    partial void OnCatalogIdChanging(System.Nullable<int> value);
     partial void OnCatalogIdChanged();
-    partial void OnReaderIdChanging(int value);
+    partial void OnReaderIdChanging(System.Nullable<int> value);
     partial void OnReaderIdChanged();
     #endregion
 		
@@ -162,8 +151,8 @@ namespace Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CatalogId", DbType="Int NOT NULL")]
-		public int CatalogId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CatalogId", DbType="Int")]
+		public System.Nullable<int> CatalogId
 		{
 			get
 			{
@@ -186,8 +175,8 @@ namespace Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReaderId", DbType="Int NOT NULL")]
-		public int ReaderId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReaderId", DbType="Int")]
+		public System.Nullable<int> ReaderId
 		{
 			get
 			{
@@ -237,7 +226,7 @@ namespace Data
 					}
 					else
 					{
-						this._CatalogId = default(int);
+						this._CatalogId = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Catalog");
 				}
@@ -271,7 +260,7 @@ namespace Data
 					}
 					else
 					{
-						this._ReaderId = default(int);
+						this._ReaderId = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Reader");
 				}
@@ -434,116 +423,6 @@ namespace Data
 		{
 			this.SendPropertyChanging();
 			entity.Catalog = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Event")]
-	public partial class Event : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _EventType;
-		
-		private System.DateTime _DateTime;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnEventTypeChanging(string value);
-    partial void OnEventTypeChanged();
-    partial void OnDateTimeChanging(System.DateTime value);
-    partial void OnDateTimeChanged();
-    #endregion
-		
-		public Event()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string EventType
-		{
-			get
-			{
-				return this._EventType;
-			}
-			set
-			{
-				if ((this._EventType != value))
-				{
-					this.OnEventTypeChanging(value);
-					this.SendPropertyChanging();
-					this._EventType = value;
-					this.SendPropertyChanged("EventType");
-					this.OnEventTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime DateTime
-		{
-			get
-			{
-				return this._DateTime;
-			}
-			set
-			{
-				if ((this._DateTime != value))
-				{
-					this.OnDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._DateTime = value;
-					this.SendPropertyChanged("DateTime");
-					this.OnDateTimeChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
