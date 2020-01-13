@@ -132,7 +132,8 @@ namespace Services {
                                        select _reader).SingleOrDefault();
                 List<Model.Catalog> catalogModels = new List<Model.Catalog>();
                 foreach (Catalog catalogEntity in catalogEntities) {
-                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, readerEntity.Books.Count));
+                    List<Book> bookEntities = catalogEntity.Books.Where(b => b.ReaderId == readerEntity.Id).ToList();
+                    catalogModels.Add(new Model.Catalog(catalogEntity.Author, catalogEntity.Title, bookEntities.Count));
                 }
                 return catalogModels;
             }
