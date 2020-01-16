@@ -8,7 +8,7 @@ using Services;
 
 namespace Tests {
     [TestClass]
-    [DeploymentItem(@"Lib.mdf")]
+    [DeploymentItem(@"Lib_old.mdf")]
     public class LogicTest {
 
         private Library library;
@@ -16,7 +16,7 @@ namespace Tests {
 
         [ClassInitialize]
         public static void ClassInitializeMethod(TestContext context) {
-            string DBRelativePath = "Lib.mdf";
+            string DBRelativePath = "Lib_old.mdf";
             string testingWorkingFolder = Environment.CurrentDirectory;
             string DBPath = Path.Combine(testingWorkingFolder, DBRelativePath);
             FileInfo databaseFile = new FileInfo(DBPath);
