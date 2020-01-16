@@ -11,7 +11,7 @@ namespace Tests {
     [DeploymentItem(@"Lib.mdf")]
     public class LogicTest {
 
-        private Library library;
+        private static Library library;
         private static string connectionString;
 
         [ClassInitialize]
@@ -21,6 +21,18 @@ namespace Tests {
             string DBPath = Path.Combine(testingWorkingFolder, DBRelativePath);
             FileInfo databaseFile = new FileInfo(DBPath);
             Assert.IsTrue(databaseFile.Exists, $"{Environment.CurrentDirectory}");
+            library = new Library();
+        }
+
+
+        [TestMethod]
+        public void Test() {
+
+            using (LibDataContext lib = new LibDataContext(connectionString)) {
+                Assert.IsNotNull(lib.Connection);
+                Assert.AreEqual<int>(2, lib.Readers.Count());
+                //IEnumerable filtered = lib.FilterReadersByLastName_ForEach("Reader");           
+            }
         }
 
         [TestMethod]
