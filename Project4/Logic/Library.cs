@@ -104,9 +104,8 @@ namespace Services {
                 Catalog catalogEntity = (from _catalog in lib.Catalogs
                                          where _catalog.Author == author && _catalog.Title == title
                                          select _catalog).SingleOrDefault();
-                Reader readerEntity = (from _reader in lib.Readers
-                                       where _reader.Id == readerId
-                                       select _reader).SingleOrDefault();
+
+                Reader readerEntity = lib.Readers.Where(r => r.Id == readerId).SingleOrDefault();
 
                 if (catalogEntity != null && readerEntity != null) {
                     Book bookEntity = catalogEntity.Books.Where(b => b.ReaderId == null && b.CatalogId == catalogEntity.Id).FirstOrDefault();
