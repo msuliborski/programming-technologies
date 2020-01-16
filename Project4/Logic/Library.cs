@@ -21,17 +21,31 @@ namespace Services {
         }
 
         #region Book
+
+        public void AddBook(Model.Book book) { 
+        }
+
+        public void UpdateBook(Model.Book book) {
+        }
+
+        public void DeleteBook(int bookId) { 
+        }
+
+        public Model.Book GetBook(int bookId) {
+            return null;
+        }
+
         public Model.Book GetBook(string author, string title) {
-            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
-                Catalog catalogEntity = (from _catalog in lib.Catalogs
-                                   where _catalog.Author == author && _catalog.Title == title
-                                   select _catalog).SingleOrDefault();
-                if (catalogEntity != null) {
-                    Book bookEntity = catalogEntity.Books.FirstOrDefault();
-                    return bookEntity != null ? new Model.Book(bookEntity.CatalogId, bookEntity.IdNumber) : null;
-                } else {
-                    return null;
-                }
+        using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+            Catalog catalogEntity = (from _catalog in lib.Catalogs
+                                where _catalog.Author == author && _catalog.Title == title
+                                select _catalog).SingleOrDefault();
+            if (catalogEntity != null) {
+                Book bookEntity = catalogEntity.Books.FirstOrDefault();
+                return bookEntity != null ? new Model.Book(bookEntity.CatalogId, bookEntity.IdNumber) : null;
+            } else {
+                return null;
+            }
             }
         }
         
@@ -108,6 +122,20 @@ namespace Services {
 
 
         #region Reader
+
+        public void AddReader(Model.Reader reader) {
+        }
+
+        public void UpdateReader(Model.Reader reader) {
+        }
+
+        public void DeleteReader(int readerId) {
+        }
+
+        public Model.Reader GetReader(int readerId) {
+            return null;
+        }
+
         public IEnumerable<Model.Reader> GetAllReaders() {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
                 List<Reader> readerEntities = lib.Readers.ToList();
@@ -122,6 +150,19 @@ namespace Services {
         #endregion
 
         #region Catalog
+
+        public void AddCatalog(Model.Catalog catalog) {
+        }
+
+        public void UpdateCatalog(Model.Catalog catalog) {
+        }
+
+        public void DeleteCatalog(int catalogId) {
+        }
+
+        public Model.Catalog GetCatalog(int catalogId) {
+            return null;
+        }
         public IEnumerable<Model.Catalog> GetReadersCatalogs(int readerId) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
                 IEnumerable<Catalog> catalogEntities = (from _book in lib.Books
