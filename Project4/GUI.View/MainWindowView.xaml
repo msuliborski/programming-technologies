@@ -15,7 +15,7 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Readers" VerticalAlignment="Top"/>
         <ListBox x:Name="ReadersListBox" HorizontalAlignment="Left" Height="111" Margin="10,31,0,0" VerticalAlignment="Top" Width="772"
-                  ItemsSource="{Binding Path=Readers}" SelectedItem="{Binding CurrentReader, Mode=TwoWay}">
+                  ItemsSource="{Binding Path=Readers}" SelectedItem="{Binding CurrentReader, Mode=TwoWay}" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>

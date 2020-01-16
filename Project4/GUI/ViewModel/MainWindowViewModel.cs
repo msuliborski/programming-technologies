@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using GUI.Model;
 using Services;
@@ -11,15 +13,17 @@ namespace GUI.ViewModel {
     public class MainWindowViewModel : ViewModelBase {
 
         private Library library;
+        private bool canRent;
+        private bool canReturn;
 
         public MainWindowViewModel() {
             library = new Library();
-
             GetCatalogs();
             GetReaders();
-            rentCommand = new RelayCommand(o => rentMethod(o), o => canRent(o));
-            returnCommand = new RelayCommand(o => returnMethod(o), o => canReturn(o));
+            rentCommand = new RelayCommand(o => rentMethod(o), o => canRent);
+            returnCommand = new RelayCommand(o => returnMethod(o), o => canReturn);
         }
+
 
         private void GetCatalogs() {
             List<CatalogModel> s = new List<CatalogModel>();
@@ -51,27 +55,39 @@ namespace GUI.ViewModel {
 
         public ICommand rentCommand { get; set; }
         private void rentMethod(Object o) {
-            library.RentBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
-            GetReadersCatalogs();
-            GetCatalogs();
-            GetReaders();
+            canRent = false;
+            canReturn = false;
+            Task task = Task.Factory
+               .StartNew(() => {
+                   library.RentBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
+                   GetReadersCatalogs();
+                   GetCatalogs();
+                   GetReaders();
+               });
         }
-        private bool canRent(Object o) {
-            if (currentCatalog != null && currentReader != null && library.UserCanRentBook(currentCatalog.Author, currentCatalog.Title)) return true;
-            return false;
+
+        private void updateCanReturnAndCanRent() {
+            
+                    if (currentCatalog != null && currentReader != null && library.UserCanRentBook(currentCatalog.Author, currentCatalog.Title)) canRent = true;
+                    else canRent = false;
+                    if (currentCatalog != null && currentReader != null && library.UserCanReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id)) canReturn = true;
+                    else canReturn = false;
+                
         }
         
         public ICommand returnCommand { get; set; }
         private void returnMethod(Object o) {
-            library.ReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
-            GetReadersCatalogs();
-            GetCatalogs();
-            GetReaders();
+            canRent = false;
+            canReturn = false;
+            Task task = Task.Factory
+                .StartNew(() => {
+                    library.ReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id);
+                    GetReadersCatalogs();
+                    GetCatalogs();
+                    GetReaders();
+                });
         }
-        private bool canReturn(Object o) {
-            if (currentCatalog != null && currentReader != null && library.UserCanReturnBook(currentCatalog.Author, currentCatalog.Title, currentReader.Id)) return true;
-            return false;
-        }
+
 
         private List<CatalogModel> catalogs;
         public List<CatalogModel> Catalogs {
@@ -102,7 +118,11 @@ namespace GUI.ViewModel {
             }
             set {
                 this.currentCatalog = value;
-                this.OnPropertyChanged(nameof(CurrentCatalog));
+                Task task = Task.Factory
+                .StartNew(() => {
+                    updateCanReturnAndCanRent();
+                    this.OnPropertyChanged(nameof(CurrentCatalog));
+                });
             }
         }
 
@@ -125,8 +145,12 @@ namespace GUI.ViewModel {
             }
             set {
                 this.currentReader = value;
-                GetReadersCatalogs();
-                this.OnPropertyChanged(nameof(CurrentReader));
+                Task task = Task.Factory
+                .StartNew(() => {
+                    GetReadersCatalogs();
+                    updateCanReturnAndCanRent();
+                    this.OnPropertyChanged(nameof(CurrentReader));
+                });
             }
         }
     }
