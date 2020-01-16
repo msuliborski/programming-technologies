@@ -11,7 +11,7 @@ namespace Services {
 
         public Library() {
             
-            string workingFolder = Environment.CurrentDirectory + "\\..\\..\\..\\Tests\\Lib_old.mdf";
+            string workingFolder = Environment.CurrentDirectory + "\\..\\..\\..\\Tests\\Lib.mdf";
             string DBPath = Path.GetFullPath(workingFolder);
             ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={DBPath};Integrated Security=True;Connect Timeout=30;";
         }
