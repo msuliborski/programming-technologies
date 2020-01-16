@@ -17,5 +17,11 @@ namespace Services.Model {
             LastName = lastName;
             Books = books;
         }
+
+        public Reader(int id, string firstName, string lastName) {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+        }
     }
 }
