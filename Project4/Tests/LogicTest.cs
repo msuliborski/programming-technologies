@@ -1,9 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Data;
 using System.IO;
-using System.Linq;
 using System;
-using System.Collections;
 using Services;
 
 namespace Tests {
@@ -12,7 +9,7 @@ namespace Tests {
     public class LogicTest {
 
         private static Library library;
-        private static string connectionString;
+        
 
         [ClassInitialize]
         public static void ClassInitializeMethod(TestContext context) {
@@ -26,92 +23,48 @@ namespace Tests {
 
 
         [TestMethod]
-        public void Test() {
-
-            using (LibDataContext lib = new LibDataContext(connectionString)) {
-                Assert.IsNotNull(lib.Connection);
-                Assert.AreEqual<int>(2, lib.Readers.Count());
-                //IEnumerable filtered = lib.FilterReadersByLastName_ForEach("Reader");           
-            }
-        }
-
-        [TestMethod]
-        public void FillTest() {
-            Assert.IsTrue(library.GetAllCatalogs().ToList().Count == 12);
-            Assert.IsTrue(library.GetAllReaders().ToList().Count == 3);
-
-
-            Assert.IsTrue(library.GetCatalog(0).Author.Equals("Shakespeare"));
-            Assert.IsTrue(library.GetCatalog(0).Title.Equals("Sonnet 116"));
-            Assert.IsTrue(library.GetCatalog(0).Books == 3);
-            Assert.IsTrue(library.GetBook(0).IdNumber == 1);
-
-
-            Assert.IsTrue(library.GetReader(1).FirstName.Equals("John"));
-            Assert.IsTrue(library.GetReader(1).LastName.Equals("Kowalsky"));
-            Assert.IsTrue(library.GetReader(1).Id == 1);
-            Assert.IsTrue(library.GetReader(1).Books == 3);
-            Assert.IsTrue(library.GetBook(1).IdNumber == 26);
-        }
-
-        [TestMethod]
         public void BookTest() {
-            Services.Model.Catalog c = library.GetCatalog(0);
-
-            Assert.IsTrue(library.GetCatalog(0).Books == 3);
-            library.AddBook(new Services.Model.Book(0, 100));
-            Assert.IsTrue(library.GetCatalog(0).Books == 4);
-            library.DeleteBook(100);
-            Assert.IsTrue(library.GetCatalog(0).Books == 3);
+            Services.Model.Catalog c = library.GetCatalog(1);
+            int count = library.GetCatalog(1).Books;
+            library.AddBook(new Services.Model.Book(1, 1, 999999));
+            Assert.IsTrue(library.GetCatalog(1).Books == count + 1);
+            library.DeleteMaxBook();
+            Assert.IsTrue(library.GetCatalog(1).Books == count);
         }
 
-        //[TestMethod]
-        //public void ReaderTest() {
+        [TestMethod]
+        public void ReaderTest() {
+            Services.Model.Reader reader = library.GetReader(1);
+            string oldName = reader.FirstName;
+            reader.FirstName = "A";
+            library.UpdateReader(reader);
+            Assert.IsTrue(library.GetReader(1).FirstName.Equals(reader.FirstName));
+            reader.FirstName = oldName;
+            library.UpdateReader(reader);
+            Assert.IsTrue(library.GetReader(1).FirstName.Equals(oldName));
+    }
 
-        //    Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 3);
-        //    dataRepository.AddReader(new Reader(90, "test10", "test20"));
-        //    Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 4);
-        //    dataRepository.AddReader(new Reader(91, "test11", "test21"));
-        //    Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 5);
+        [TestMethod]
+        public void CatalogTest() {
 
-        //    Assert.IsTrue(dataRepository.GetReader(91).FirstName.Equals("test11"));
-        //    Assert.IsTrue(dataRepository.GetReader(91).LastName.Equals("test21"));
-        //    Assert.IsTrue(dataRepository.GetReader(91).Id == 91);
-
-        //    Catalog c = dataRepository.GetCatalog(0);
-        //    Assert.IsTrue(dataRepository.GetBook(c).Catalog.Author.Equals("Shakespeare"));
-        //    Assert.IsTrue(dataRepository.GetBook(c).Catalog.Title.Equals("Sonnet 116"));
-        //    Assert.IsTrue(dataRepository.GetBook(c).Catalog.Books.Count == 3);
-        //    Assert.IsTrue(dataRepository.GetBook(c).Catalog.Books[0].IdNumber == 1);
-
-
-        //    dataRepository.DeleteReader(91);
-        //    Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 4);
-
-
-        //    Reader r = new Reader(99, "test99a", "test99b");
-        //    dataRepository.UpdateReader(90, r);
-
-        //    Assert.IsTrue(dataRepository.GetReader(99).FirstName.Equals("test99a"));
-        //    Assert.IsTrue(dataRepository.GetReader(99).LastName.Equals("test99b"));
-        //    Assert.IsTrue(dataRepository.GetReader(99).Id == 99);
-        //    Assert.IsTrue(dataRepository.GetAllReaders().ToList().Count == 4);
-        //}
-
-        //[TestMethod]
-        //public void CatalogTest() {
-
-        //    Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
-        //    dataRepository.AddCatalog(new Catalog("test1", "test2"));
-        //    Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 13);
-
-        //    Assert.IsTrue(dataRepository.GetCatalog(12).Author.Equals("test1"));
-        //    Assert.IsTrue(dataRepository.GetCatalog(12).Title.Equals("test2"));
-
-        //    dataRepository.DeleteCatalog(1);
-        //    Assert.IsTrue(dataRepository.GetAllCatalogs().ToList().Count == 12);
-
-        //}
-
+            Services.Model.Catalog catalog = library.GetCatalog(1);
+            string oldTitle = catalog.Title;
+            catalog.Title = "A";
+            library.UpdateCatalog(catalog);
+            Assert.IsTrue(library.GetCatalog(1).Title.Equals(catalog.Title));
+            catalog.Title = oldTitle;
+            library.UpdateCatalog(catalog);
+            Assert.IsTrue(library.GetCatalog(1).Title.Equals(oldTitle));
+        } 
+        
+        [TestMethod]
+        public void RentAndReturnTest() {
+            int count = library.GetReader(1).Books;
+            Assert.IsTrue(library.GetReader(1).Books == count);
+            library.RentBook("King", "It", 1);
+            Assert.IsTrue(library.GetReader(1).Books == count + 1);
+            library.ReturnBook("King", "It", 1);
+            Assert.IsTrue(library.GetReader(1).Books == count);
+        }
     }
 }

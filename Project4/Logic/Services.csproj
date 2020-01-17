@@ -12,11 +12,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Edm" Version="5.8.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
   </ItemGroup>
 
 </Project>

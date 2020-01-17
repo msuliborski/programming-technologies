@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using Data;
 using System.Linq;
 using System.IO;
+using System.Windows.Controls;
 
 namespace Services {
     public class Library {
         
         private string ConnectionString { get; }
+
+        private VarcharValidator varcharValidator = new VarcharValidator();
 
         public Library() {
             
@@ -42,6 +45,15 @@ namespace Services {
         public void DeleteBook(int bookId) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
                 Book bookEntity = lib.Books.Where(b => b.IdNumber == bookId).FirstOrDefault();
+                lib.Books.DeleteOnSubmit(bookEntity);
+                lib.SubmitChanges();
+            }
+        }
+
+        public void DeleteMaxBook() {
+            using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                int maxId = lib.Books.Max(b => b.IdNumber);
+                Book bookEntity = lib.Books.Where(b => b.IdNumber == maxId).FirstOrDefault();
                 lib.Books.DeleteOnSubmit(bookEntity);
                 lib.SubmitChanges();
             }
@@ -143,6 +155,10 @@ namespace Services {
 
         public void AddReader(Model.Reader reader) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                ValidationResult firstNameValidation = varcharValidator.Validate(reader.FirstName, null);
+                if (!firstNameValidation.IsValid) return;
+                ValidationResult lastNameValidation = varcharValidator.Validate(reader.LastName, null);
+                if (!lastNameValidation.IsValid) return;
                 lib.Readers.InsertOnSubmit(new Reader(reader.Id, reader.FirstName, reader.LastName));
                 lib.SubmitChanges();
             }
@@ -150,6 +166,10 @@ namespace Services {
 
         public void UpdateReader(Model.Reader reader) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                ValidationResult firstNameValidation = varcharValidator.Validate(reader.FirstName, null);
+                if (!firstNameValidation.IsValid) return;
+                ValidationResult lastNameValidation = varcharValidator.Validate(reader.LastName, null);
+                if (!lastNameValidation.IsValid) return;
                 Reader readerEntity = lib.Readers.Where(r => r.Id == reader.Id).FirstOrDefault();
                 readerEntity.FirstName = reader.FirstName;
                 readerEntity.LastName = reader.LastName;
@@ -168,7 +188,7 @@ namespace Services {
         public Model.Reader GetReader(int readerId) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
                 Reader readerEntity = lib.Readers.Where(r => r.Id == readerId).FirstOrDefault();
-                return new Model.Reader(readerId, readerEntity.FirstName, readerEntity.LastName);
+                return new Model.Reader(readerId, readerEntity.FirstName, readerEntity.LastName, readerEntity.Books.Count);
             }
         }
 
@@ -189,6 +209,10 @@ namespace Services {
 
         public void AddCatalog(Model.Catalog catalog) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                ValidationResult authorValidation = varcharValidator.Validate(catalog.Author, null);
+                if (!authorValidation.IsValid) return;
+                ValidationResult titleValidation = varcharValidator.Validate(catalog.Title, null);
+                if (!titleValidation.IsValid) return;
                 lib.Catalogs.InsertOnSubmit(new Catalog(catalog.CatalogId, catalog.Author, catalog.Title));
                 lib.SubmitChanges();
             }
@@ -196,6 +220,10 @@ namespace Services {
 
         public void UpdateCatalog(Model.Catalog catalog) {
             using (LibDataContext lib = new LibDataContext(ConnectionString)) {
+                ValidationResult authorValidation = varcharValidator.Validate(catalog.Author, null);
+                if (!authorValidation.IsValid) return;
+                ValidationResult titleValidation = varcharValidator.Validate(catalog.Title, null);
+                if (!titleValidation.IsValid) return;
                 Catalog catalogEntity = lib.Catalogs.Where(c => c.Id == catalog.CatalogId).FirstOrDefault();
                 catalogEntity.Author = catalog.Author;
                 catalogEntity.Title = catalog.Title;
