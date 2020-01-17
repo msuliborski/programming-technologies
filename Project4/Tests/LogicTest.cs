@@ -18,7 +18,8 @@ namespace Tests {
             string DBPath = Path.Combine(testingWorkingFolder, DBRelativePath);
             FileInfo databaseFile = new FileInfo(DBPath);
             Assert.IsTrue(databaseFile.Exists, $"{Environment.CurrentDirectory}");
-            library = new Library();
+            string connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={DBPath};Integrated Security = True; Connect Timeout = 30;";
+            library = new Library(connectionString);
         }
 
 
